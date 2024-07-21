@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MainModule } from './resources/main/main.module';
 import { MongooseModule } from './db/mongoose.module';
+import { WorthModule } from './resources/worth/worth.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { MongooseModule } from './db/mongoose.module';
 
     MainModule,
     MongooseModule,
+    WorthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
