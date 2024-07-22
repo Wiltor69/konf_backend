@@ -1,8 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { WorthService } from './worth.service';
 import { CreateWorthDto } from './dto/create-worth.dto';
 import { UpdateWorthDto } from './dto/update-worth.dto';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('worth')
 @Controller('worth')
 export class WorthController {
   constructor(private readonly worthService: WorthService) {}
@@ -19,16 +28,16 @@ export class WorthController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.worthService.findOne(+id);
+    return this.worthService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateWorthDto: UpdateWorthDto) {
-    return this.worthService.update(+id, updateWorthDto);
+    return this.worthService.update(id, updateWorthDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.worthService.remove(+id);
+    return this.worthService.remove(id);
   }
 }

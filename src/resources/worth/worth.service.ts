@@ -21,15 +21,15 @@ export class WorthService {
     return this.worthModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} worth`;
+  findOne(id: string): Promise<Worth> {
+    return this.worthModel.findById(id);
   }
 
-  update(id: number, updateWorthDto: UpdateWorthDto) {
-    return `This action updates a #${id} worth`;
+  update(id: string, updateWorthDto: UpdateWorthDto): Promise<Worth> {
+    return this.worthModel.findByIdAndUpdate(id, updateWorthDto, { new: true });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} worth`;
+  remove(id: string): Promise<Worth> {
+    return this.worthModel.findByIdAndDelete(id);
   }
 }
