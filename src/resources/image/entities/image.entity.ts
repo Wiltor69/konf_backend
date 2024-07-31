@@ -11,7 +11,7 @@ export class Image {
     example: 'https://example.com/image.jpg',
     required: false,
   })
-  @Prop({ type: String })
+  @Prop({ required: true })
   url: string;
 
   @ApiProperty({
@@ -19,11 +19,7 @@ export class Image {
     example: 'A beautiful landscape',
     required: false,
   })
-  @Prop({ type: String })
+  @Prop()
   description: string;
-
-  @ApiProperty({ type: 'string', format: 'binary' })
-  @Prop({ type: String })
-  file: Express.Multer.File;
 }
 export const ImageSchema = SchemaFactory.createForClass(Image);

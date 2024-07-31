@@ -1,9 +1,10 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { CreateImageDto } from './dto/create-image.dto';
 import { Image, ImageDocument } from './entities/image.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { UploadImageDto } from './dto/upload-image.dto';
 
 @Injectable()
 export class ImageService {
@@ -12,26 +13,29 @@ export class ImageService {
     private cloudinary: CloudinaryService,
   ) {}
 
-  async create(createImageDto: CreateImageDto) {
-    const { file, url } = createImageDto;
+  async create(createImageDto: CreateImageDto, file: Express.Multer.File) {
+    const uploadImage: UploadImageDto = {
+      ...createImageDto,
+    };
     try {
-      const urlImg = await this.imageModel.findOne({ url: url });
-      if (urlImg) {
-        throw new BadRequestException('URL already exists');
-      }
       if (file) {
         const img = await this.cloudinary.uploadImage(file).catch((e) => {
-          throw new BadRequestException(e.message);
+          throw new InternalServerErrorException(
+            'Failed to upload image to Cloudinary',
+          );
         });
+
         if (img) {
-          createImageDto.url = img.url;
+          uploadImage.url = img.url;
         }
       }
-      const image = new this.imageModel({ ...createImageDto });
+      const image = new this.imageModel({ ...uploadImage });
       await image.save();
       return image;
     } catch (error) {
-      throw new BadRequestException(error.message);
+      throw new InternalServerErrorException(
+        `Error uploading image: ${error.message}`,
+      );
     }
   }
 

@@ -7,6 +7,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  BadRequestException,
 } from '@nestjs/common';
 import { ImageService } from './image.service';
 import { CreateImageDto } from './dto/create-image.dto';
@@ -14,6 +15,7 @@ import { CreateImageDto } from './dto/create-image.dto';
 import { ApiConsumes } from '@nestjs/swagger';
 
 import { FileInterceptor } from '@nestjs/platform-express';
+import { UploadImageDto } from './dto/upload-image.dto';
 
 @Controller('image')
 export class ImageController {
@@ -23,10 +25,15 @@ export class ImageController {
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('file'))
   async createImage(
-    // @UploadedFile(),
     @Body() createImageDto: CreateImageDto,
+    @UploadedFile() file: Express.Multer.File,
   ) {
-    return this.imageService.create(createImageDto);
+    if (!file) {
+      throw new BadRequestException('No file uploaded');
+    }
+
+    const res = this.imageService.create(createImageDto, file);
+    return res;
   }
 
   @Get()
@@ -38,11 +45,6 @@ export class ImageController {
   findOne(@Param('id') id: string) {
     return this.imageService.findOne(id);
   }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateImageDto: UpdateImageDto) {
-  //   return this.imageService.update(id, updateImageDto);
-  // }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
