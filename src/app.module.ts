@@ -8,6 +8,7 @@ import { WorthModule } from './resources/worth/worth.module';
 import { ContactModule } from './resources/contact/contact.module';
 import { ImageModule } from './resources/image/image.module';
 import { EventsModule } from './resources/events/events.module';
+import { HelpModule } from './resources/help/help.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { EventsModule } from './resources/events/events.module';
     ContactModule,
     ImageModule,
     EventsModule,
+    HelpModule,
   ],
   controllers: [AppController],
   providers: [AppService],
