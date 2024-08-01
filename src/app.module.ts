@@ -9,6 +9,7 @@ import { ContactModule } from './resources/contact/contact.module';
 import { ImageModule } from './resources/image/image.module';
 import { EventsModule } from './resources/events/events.module';
 import { HelpModule } from './resources/help/help.module';
+import { PartnerModule } from './resources/partner/partner.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { HelpModule } from './resources/help/help.module';
     ImageModule,
     EventsModule,
     HelpModule,
+    PartnerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
