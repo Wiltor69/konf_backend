@@ -14,5 +14,6 @@ import { CloudinaryModule } from '../cloudinary/cloudinary.module';
   ],
   controllers: [ImageController],
   providers: [ImageService],
+  exports: [ImageService],
 })
 export class ImageModule {}

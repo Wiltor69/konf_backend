@@ -7,6 +7,7 @@ import { MongooseModule } from './db/mongoose.module';
 import { WorthModule } from './resources/worth/worth.module';
 import { ContactModule } from './resources/contact/contact.module';
 import { ImageModule } from './resources/image/image.module';
+import { EventsModule } from './resources/events/events.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ImageModule } from './resources/image/image.module';
     WorthModule,
     ContactModule,
     ImageModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
