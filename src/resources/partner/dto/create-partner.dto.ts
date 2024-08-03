@@ -5,11 +5,10 @@ export class CreatePartnerDto {
     description: 'Web company',
     example: 'http://google.com',
   })
-  webPatner: string;
+  webPatner?: string;
 
   @ApiProperty({
-    description: 'This is id of Image',
-    example: '362876387467846',
+    type: 'string',
   })
-  imagePartner: string;
+  imagePartnerId: string;
 }

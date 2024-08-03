@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import mongoose, { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument, Types } from 'mongoose';
 import { Image } from 'src/resources/image/entities/image.entity';
 
 export type PartnerDocument = HydratedDocument<Partner>;
@@ -14,10 +14,10 @@ export class Partner {
   webPatner: string;
 
   @ApiProperty({
-    description: 'This is id of Image',
-    example: '362876387467846',
+    description: 'This is Image',
+    example: {},
   })
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Image' })
-  imagePartner: Image;
+  image: Types.ObjectId;
 }
 export const PartnerSchema = SchemaFactory.createForClass(Partner);

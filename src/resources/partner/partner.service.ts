@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Partner, PartnerDocument } from './entities/partner.entity';
 import { ImageService } from '../image/image.service';
 import { Model } from 'mongoose';
+import { AddImageDto } from './dto/add-image.dto';
 
 @Injectable()
 export class PartnerService {
@@ -13,14 +14,18 @@ export class PartnerService {
     private readonly imageService: ImageService,
   ) {}
 
-  async create(createPartnerDto: CreatePartnerDto): Promise<Partner> {
+  async create(createPartnerDto: CreatePartnerDto) {
+    const addImageDto: AddImageDto = { ...createPartnerDto };
+
     const isImage = await this.imageService.findOne(
-      createPartnerDto.imagePartner,
+      createPartnerDto.imagePartnerId,
     );
     if (!isImage) {
       throw new NotFoundException('Image not found');
     }
-    const newHelp = new this.partnerModel(createPartnerDto);
+    addImageDto.image = isImage;
+
+    const newHelp = new this.partnerModel({ ...addImageDto });
     return await newHelp.save();
   }
 
