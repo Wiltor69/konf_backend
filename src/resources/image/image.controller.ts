@@ -12,11 +12,11 @@ import {
 import { ImageService } from './image.service';
 import { CreateImageDto } from './dto/create-image.dto';
 
-import { ApiConsumes } from '@nestjs/swagger';
+import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadImageDto } from './dto/upload-image.dto';
-
+@ApiTags('image')
 @Controller('image')
 export class ImageController {
   constructor(private readonly imageService: ImageService) {}

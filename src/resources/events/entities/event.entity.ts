@@ -38,6 +38,6 @@ export class Event {
     example: '362876387467846',
   })
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Image' })
-  imageEvent: Types.ObjectId;
+  image: Types.ObjectId;
 }
 export const EventSchema = SchemaFactory.createForClass(Event);

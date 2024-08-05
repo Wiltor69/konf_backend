@@ -8,7 +8,8 @@ export class CreatePartnerDto {
   webPatner?: string;
 
   @ApiProperty({
-    type: 'string',
+    description: 'This is id of Image',
+    example: '362876387467846',
   })
   imagePartnerId: string;
 }

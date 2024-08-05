@@ -4,10 +4,14 @@ import { EventsController } from './events.controller';
 import { Event, EventSchema } from './entities/event.entity';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ImageModule } from '../image/image.module';
+import { ImageSchema, Image } from '../image/entities/image.entity';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Event.name, schema: EventSchema }]),
+    MongooseModule.forFeature([
+      { name: Event.name, schema: EventSchema },
+      { name: Image.name, schema: ImageSchema },
+    ]),
     ImageModule,
   ],
   controllers: [EventsController],

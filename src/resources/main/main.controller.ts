@@ -1,8 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { MainService } from './main.service';
 import { CreateMainDto } from './dto/create-main.dto';
 import { UpdateMainDto } from './dto/update-main.dto';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('main')
 @Controller('main')
 export class MainController {
   constructor(private readonly mainService: MainService) {}

@@ -1,6 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import { Image } from 'src/resources/image/entities/image.entity';
 
-export class CreateEventDto {
+export class AddImageEventDto {
+  @ApiProperty({
+    description: 'This is Image',
+    example: '{}',
+    required: false,
+  })
+  @Type(() => Image)
+  image?: Image;
+
   @ApiProperty({
     description: 'This is data of event',
     example: '10 September 2024 10:44',
@@ -24,10 +34,4 @@ export class CreateEventDto {
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
   description: string;
-
-  @ApiProperty({
-    description: 'This is id of Image',
-    example: '362876387467846',
-  })
-  imageEventId: string;
 }

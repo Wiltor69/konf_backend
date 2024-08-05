@@ -22,19 +22,23 @@ export class PartnerService {
     );
     if (!isImage) {
       throw new NotFoundException('Image not found');
+    } else {
+      addImageDto.image = isImage;
     }
-    addImageDto.image = isImage;
 
-    const newHelp = new this.partnerModel({ ...addImageDto });
+    const newHelp = new this.partnerModel({
+      ...addImageDto,
+      isImage: addImageDto.image,
+    });
     return await newHelp.save();
   }
 
   findAll(): Promise<Partner[]> {
-    return this.partnerModel.find().exec();
+    return this.partnerModel.find().populate('image');
   }
 
   findOne(id: string): Promise<Partner> {
-    return this.partnerModel.findById(id);
+    return this.partnerModel.findById(id).populate('image');
   }
 
   update(id: string, updatePartnerDto: UpdatePartnerDto): Promise<Partner> {

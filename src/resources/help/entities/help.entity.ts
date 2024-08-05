@@ -17,6 +17,6 @@ export class Help {
     example: '362876387467846',
   })
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Image' })
-  imageHelp: Types.ObjectId;
+  image: Types.ObjectId;
 }
 export const HelpSchema = SchemaFactory.createForClass(Help);

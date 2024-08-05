@@ -10,7 +10,8 @@ import {
 import { PartnerService } from './partner.service';
 import { CreatePartnerDto } from './dto/create-partner.dto';
 import { UpdatePartnerDto } from './dto/update-partner.dto';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('partner')
 @Controller('partner')
 export class PartnerController {
   constructor(private readonly partnerService: PartnerService) {}

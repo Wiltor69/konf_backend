@@ -11,5 +11,5 @@ export class CreateHelpDto {
     description: 'This is id of Image',
     example: '362876387467846',
   })
-  imageHelp: string;
+  imageHelpId: string;
 }

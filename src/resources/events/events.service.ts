@@ -6,6 +6,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Event, EventDocument } from './entities/event.entity';
 import { ImageService } from '../image/image.service';
+import { AddImageEventDto } from './dto/add-image-event.dto';
 
 @Injectable()
 export class EventsService {
@@ -14,21 +15,31 @@ export class EventsService {
     private readonly imageService: ImageService,
   ) {}
 
-  async create(createEventDto: CreateEventDto): Promise<Event> {
-    const isImage = await this.imageService.findOne(createEventDto.imageEvent);
+  async create(createEventDto: CreateEventDto) {
+    const addImageEventDto: AddImageEventDto = { ...createEventDto };
+
+    const isImage = await this.imageService.findOne(
+      createEventDto.imageEventId,
+    );
     if (!isImage) {
       throw new NotFoundException('Image not found');
+    } else {
+      addImageEventDto.image = isImage;
     }
-    const newEvent = new this.eventModel(createEventDto);
+
+    const newEvent = new this.eventModel({
+      ...addImageEventDto,
+      isImage: addImageEventDto.image,
+    });
     return await newEvent.save();
   }
 
   findAll(): Promise<Event[]> {
-    return this.eventModel.find().exec();
+    return this.eventModel.find().populate('image');
   }
 
   findOne(id: string): Promise<Event> {
-    return this.eventModel.findById(id);
+    return this.eventModel.findById(id).populate('image');
   }
 
   update(id: string, updateEventDto: UpdateEventDto): Promise<Event> {

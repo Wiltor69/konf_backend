@@ -10,7 +10,8 @@ import {
 import { HelpService } from './help.service';
 import { CreateHelpDto } from './dto/create-help.dto';
 import { UpdateHelpDto } from './dto/update-help.dto';
-
+import { ApiTags } from '@nestjs/swagger';
+@ApiTags('help')
 @Controller('help')
 export class HelpController {
   constructor(private readonly helpService: HelpService) {}

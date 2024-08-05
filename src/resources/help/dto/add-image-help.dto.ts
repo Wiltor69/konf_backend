@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { Image } from 'src/resources/image/entities/image.entity';
 
-export class AddImageDto {
+export class AddImageHelpDto {
   @ApiProperty({
     description: 'This is Image',
     example: '{}',
@@ -12,9 +12,8 @@ export class AddImageDto {
   image?: Image;
 
   @ApiProperty({
-    description: 'Web company',
-    example: 'http://google.com',
-    required: false,
+    description: 'Title Help',
+    example: 'Help all people',
   })
-  webPatner?: string;
+  titleHelp: string;
 }
