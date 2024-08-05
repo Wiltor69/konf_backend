@@ -16,5 +16,6 @@ import { ImageSchema, Image } from '../image/entities/image.entity';
   ],
   controllers: [HelpController],
   providers: [HelpService],
+  exports: [HelpService],
 })
 export class HelpModule {}

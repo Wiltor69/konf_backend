@@ -16,5 +16,6 @@ import { ImageSchema, Image } from '../image/entities/image.entity';
   ],
   controllers: [PartnerController],
   providers: [PartnerService],
+  exports: [PartnerService],
 })
 export class PartnerModule {}

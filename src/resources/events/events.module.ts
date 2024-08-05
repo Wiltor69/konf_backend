@@ -16,5 +16,6 @@ import { ImageSchema, Image } from '../image/entities/image.entity';
   ],
   controllers: [EventsController],
   providers: [EventsService],
+  exports: [EventsService],
 })
 export class EventsModule {}

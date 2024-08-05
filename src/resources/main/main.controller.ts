@@ -28,16 +28,16 @@ export class MainController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.mainService.findOne(+id);
+    return this.mainService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMainDto: UpdateMainDto) {
-    return this.mainService.update(+id, updateMainDto);
+    return this.mainService.update(id, updateMainDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.mainService.remove(+id);
+    return this.mainService.remove(id);
   }
 }

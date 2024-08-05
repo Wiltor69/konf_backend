@@ -10,5 +10,6 @@ import { Worth, WorthSchema } from './entities/worth.entity';
   imports: [
     MongooseModule.forFeature([{ name: Worth.name, schema: WorthSchema }]),
   ],
+  exports: [WorthService],
 })
 export class WorthModule {}
