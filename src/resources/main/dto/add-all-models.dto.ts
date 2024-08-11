@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-// import { IsArray } from 'class-validator';
+import { IsArray } from 'class-validator';
 import { Contact } from 'src/resources/contact/entities/contact.entity';
 import { Event } from 'src/resources/events/entities/event.entity';
 import { Help } from 'src/resources/help/entities/help.entity';
@@ -12,20 +12,32 @@ export class AddAllModelsDto {
     title: 'Title Main',
     example: 'Main',
   })
-  titleMain: string;
+  titleMainUA: string;
 
   @ApiProperty({
     description: 'This information about company',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
-  description: string;
+  descriptionUA: string;
+
+  @ApiProperty({
+    title: 'Title Main',
+    example: 'Main',
+  })
+  titleMainEN: string;
+
+  @ApiProperty({
+    description: 'This information about company',
+    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
+  })
+  descriptionEN: string;
 
   @ApiProperty({
     description: 'This is Worth',
     example: '{}',
     required: false,
   })
-  //   @IsArray()
+  @IsArray()
   @Type(() => Worth)
   worth?: Worth[];
 
@@ -34,7 +46,7 @@ export class AddAllModelsDto {
     example: '{}',
     required: false,
   })
-  //   @IsArray()
+  @IsArray()
   @Type(() => Event)
   event?: Event[];
 
@@ -43,7 +55,7 @@ export class AddAllModelsDto {
     example: '{}',
     required: false,
   })
-  //   @IsArray()
+  @IsArray()
   @Type(() => Help)
   help?: Help[];
 
@@ -52,7 +64,7 @@ export class AddAllModelsDto {
     example: '{}',
     required: false,
   })
-  //   @IsArray()
+  @IsArray()
   @Type(() => Partner)
   partner?: Partner[];
 
@@ -61,7 +73,7 @@ export class AddAllModelsDto {
     example: '{}',
     required: false,
   })
-  //   @IsArray()
+  @IsArray()
   @Type(() => Contact)
   contact?: Contact[];
 }

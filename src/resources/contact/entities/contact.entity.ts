@@ -6,12 +6,21 @@ export type ContactDocument = HydratedDocument<Contact>;
 @Schema()
 export class Contact {
   @Prop({ required: true })
-  titleCont: string;
+  titleContUA: string;
 
   @Prop({ required: true })
-  adressCont: string;
+  adressContUA: string;
 
   @Prop({ required: true })
-  phoneCont: string;
+  phoneContUA: string;
+
+  @Prop({ required: true })
+  titleContEN: string;
+
+  @Prop({ required: true })
+  adressContEN: string;
+
+  @Prop({ required: true })
+  phoneContEN: string;
 }
 export const ContactSchema = SchemaFactory.createForClass(Contact);

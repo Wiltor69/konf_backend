@@ -10,28 +10,56 @@ export class Event {
     example: '10 September 2024 10:44',
   })
   @Prop({ required: true })
-  dataEvent: string;
+  dataEventUA: string;
 
   @ApiProperty({
     description: 'This is adress of Event',
     example: 'Kyev, Khreschatik 10',
   })
   @Prop({ required: true })
-  adressEvent: string;
+  adressEventUA: string;
 
   @ApiProperty({
     title: 'Title Event',
     example: 'New event',
   })
   @Prop({ required: true })
-  titleEvent: string;
+  titleEventUA: string;
 
   @ApiProperty({
     description: 'A brief description of the event',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
   @Prop({ required: true })
-  description: string;
+  descriptionUA: string;
+
+  @ApiProperty({
+    description: 'This is data of event',
+    example: '10 September 2024 10:44',
+  })
+  @Prop({ required: true })
+  dataEventEN: string;
+
+  @ApiProperty({
+    description: 'This is adress of Event',
+    example: 'Kyev, Khreschatik 10',
+  })
+  @Prop({ required: true })
+  adressEventEN: string;
+
+  @ApiProperty({
+    title: 'Title Event',
+    example: 'New event',
+  })
+  @Prop({ required: true })
+  titleEventEN: string;
+
+  @ApiProperty({
+    description: 'A brief description of the event',
+    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
+  })
+  @Prop({ required: true })
+  descriptionEN: string;
 
   @ApiProperty({
     description: 'This is id of Image',

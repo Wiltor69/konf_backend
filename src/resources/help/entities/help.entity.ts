@@ -10,7 +10,14 @@ export class Help {
     example: 'Help all people',
   })
   @Prop({ required: true })
-  titleHelp: string;
+  titleHelpUA: string;
+
+  @ApiProperty({
+    description: 'Title Help',
+    example: 'Help all people',
+  })
+  @Prop({ required: true })
+  titleHelpEN: string;
 
   @ApiProperty({
     description: 'This is id of Image',

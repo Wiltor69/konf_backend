@@ -15,14 +15,28 @@ export class Main {
     example: 'Main',
   })
   @Prop({ required: true })
-  titleMain: string;
+  titleMainUA: string;
 
   @ApiProperty({
     description: 'This information about company',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
   @Prop({ required: true })
-  description: string;
+  descriptionUA: string;
+
+  @ApiProperty({
+    title: 'Title Main',
+    example: 'Main',
+  })
+  @Prop({ required: true })
+  titleMainEN: string;
+
+  @ApiProperty({
+    description: 'This information about company',
+    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
+  })
+  @Prop({ required: true })
+  descriptionEN: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Worth' }] })
   worth: Worth[];

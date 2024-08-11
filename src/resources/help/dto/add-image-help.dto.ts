@@ -15,5 +15,11 @@ export class AddImageHelpDto {
     description: 'Title Help',
     example: 'Help all people',
   })
-  titleHelp: string;
+  titleHelpUA: string;
+
+  @ApiProperty({
+    description: 'Title Help',
+    example: 'Help all people',
+  })
+  titleHelpEN: string;
 }

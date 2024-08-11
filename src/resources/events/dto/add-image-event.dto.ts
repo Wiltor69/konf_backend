@@ -15,23 +15,47 @@ export class AddImageEventDto {
     description: 'This is data of event',
     example: '10 September 2024 10:44',
   })
-  dataEvent: string;
+  dataEventUA: string;
 
   @ApiProperty({
     description: 'This is adress of Event',
     example: 'Kyev, Khreschatik 10',
   })
-  adressEvent: string;
+  adressEventUA: string;
 
   @ApiProperty({
     title: 'Title Event',
     example: 'New event',
   })
-  titleEvent: string;
+  titleEventUA: string;
 
   @ApiProperty({
     description: 'A brief description of the event',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
-  description: string;
+  descriptionUA: string;
+
+  @ApiProperty({
+    description: 'This is data of event',
+    example: '10 September 2024 10:44',
+  })
+  dataEventEN: string;
+
+  @ApiProperty({
+    description: 'This is adress of Event',
+    example: 'Kyev, Khreschatik 10',
+  })
+  adressEventEN: string;
+
+  @ApiProperty({
+    title: 'Title Event',
+    example: 'New event',
+  })
+  titleEventEN: string;
+
+  @ApiProperty({
+    description: 'A brief description of the event',
+    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
+  })
+  descriptionEN: string;
 }

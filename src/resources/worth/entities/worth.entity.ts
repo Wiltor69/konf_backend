@@ -6,6 +6,8 @@ export type WorthDocument = HydratedDocument<Worth>;
 @Schema()
 export class Worth {
   @Prop({ required: true })
-  textWorth: string;
+  textWorthUA: string;
+  @Prop({ required: true })
+  textWorthEN: string;
 }
 export const WorthSchema = SchemaFactory.createForClass(Worth);

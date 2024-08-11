@@ -5,11 +5,23 @@ export class CreateMainDto {
     title: 'Title Main',
     example: 'Main',
   })
-  titleMain: string;
+  titleMainUA: string;
 
   @ApiProperty({
     description: 'This information about company',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
-  description: string;
+  descriptionUA: string;
+
+  @ApiProperty({
+    title: 'Title Main',
+    example: 'Main',
+  })
+  titleMainEN: string;
+
+  @ApiProperty({
+    description: 'This information about company',
+    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
+  })
+  descriptionEN: string;
 }

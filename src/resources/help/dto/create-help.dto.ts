@@ -5,7 +5,13 @@ export class CreateHelpDto {
     description: 'Title Help',
     example: 'Help all people',
   })
-  titleHelp: string;
+  titleHelpEN: string;
+
+  @ApiProperty({
+    description: 'Title Help',
+    example: 'Help all people',
+  })
+  titleHelpUA: string;
 
   @ApiProperty({
     description: 'This is id of Image',
