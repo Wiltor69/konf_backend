@@ -10,13 +10,18 @@ import { ImageModule } from './resources/image/image.module';
 import { EventsModule } from './resources/events/events.module';
 import { HelpModule } from './resources/help/help.module';
 import { PartnerModule } from './resources/partner/partner.module';
+import { AboutUsModule } from './resources/about_us/about_us.module';
+import { HeroaboutModule } from './resources/heroabout/heroabout.module';
+import { SectionaboutModule } from './resources/sectionabout/sectionabout.module';
+import { MemberModule } from './resources/member/member.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
+    SectionaboutModule,
+    MemberModule,
     MainModule,
     MongooseModule,
     WorthModule,
@@ -25,6 +30,8 @@ import { PartnerModule } from './resources/partner/partner.module';
     EventsModule,
     HelpModule,
     PartnerModule,
+    AboutUsModule,
+    HeroaboutModule,
   ],
   controllers: [AppController],
   providers: [AppService],
