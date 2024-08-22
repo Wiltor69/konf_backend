@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ContactService } from './contact.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { Language } from '../util/enum';
 
 @ApiTags('contact')
 @Controller('contact')
@@ -31,6 +33,10 @@ export class ContactController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.contactService.findOne(id);
+  }
+  @Get()
+  findAllLanguage(@Query('language') language: Language) {
+    return this.contactService.findByLanguage(language);
   }
 
   @Patch(':id')

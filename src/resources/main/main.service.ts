@@ -65,8 +65,11 @@ export class MainService {
 
     const newMain = new this.mainModel({
       ...addallmodelsDto,
-      // worth: addallmodelsDto.worth,
-      // event: addallmodelsDto.event,
+      worth: addallmodelsDto.worth,
+      event: addallmodelsDto.event,
+      contact: addallmodelsDto.contact,
+      partner: addallmodelsDto.partner,
+      help: addallmodelsDto.help,
     });
     return await newMain.save();
   }

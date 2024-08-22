@@ -1,5 +1,7 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateContactDto } from './create-contact.dto';
+import { Language } from 'src/resources/util/enum';
+import { IsEnum, IsOptional } from 'class-validator';
 
 export class UpdateContactDto extends PartialType(CreateContactDto) {
   @ApiProperty({
@@ -22,4 +24,13 @@ export class UpdateContactDto extends PartialType(CreateContactDto) {
     required: false,
   })
   phoneCont: string;
+
+  @ApiProperty({
+    description: 'This is the language',
+    example: 'UA',
+    required: true,
+  })
+  @IsOptional()
+  @IsEnum(Language)
+  language?: Language;
 }
