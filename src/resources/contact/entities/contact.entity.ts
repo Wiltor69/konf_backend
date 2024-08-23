@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
-import { Language } from 'src/resources/util/enum';
+import { HydratedDocument } from 'mongoose';
+import { ELanguage } from 'src/resources/util/enum';
 
 export type ContactDocument = HydratedDocument<Contact>;
 
@@ -15,20 +15,8 @@ export class Contact {
   @Prop({ required: true })
   phoneCont: string;
 
-  @Prop({
-    type: mongoose.Schema.Types.String,
-    ref: 'Language',
-    default: Language.UA,
-  })
-  language: Language;
-
-  // @Prop({ required: true })
-  // titleContEN: string;
-
-  // @Prop({ required: true })
-  // adressContEN: string;
-
-  // @Prop({ required: true })
-  // phoneContEN: string;
+  @Prop({ required: true, enum: ELanguage })
+  language: ELanguage;
 }
+
 export const ContactSchema = SchemaFactory.createForClass(Contact);

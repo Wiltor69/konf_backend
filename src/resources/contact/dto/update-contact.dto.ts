@@ -1,6 +1,6 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateContactDto } from './create-contact.dto';
-import { Language } from 'src/resources/util/enum';
+import { ELanguage } from 'src/resources/util/enum';
 import { IsEnum, IsOptional } from 'class-validator';
 
 export class UpdateContactDto extends PartialType(CreateContactDto) {
@@ -31,6 +31,6 @@ export class UpdateContactDto extends PartialType(CreateContactDto) {
     required: true,
   })
   @IsOptional()
-  @IsEnum(Language)
-  language?: Language;
+  @IsEnum(ELanguage)
+  language: ELanguage;
 }

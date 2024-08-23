@@ -1,9 +1,9 @@
-export enum Language {
-  UA = 'ua',
-  EN = 'en',
-  ES = 'es',
-  FR = 'fr',
-  DE = 'de',
-  IT = 'it',
-  PL = 'pl',
+export enum ELanguage {
+  ENGLISH = 'en',
+  SPANISH = 'es',
+  FRENCH = 'fr',
+  GERMAN = 'de',
+  ITALIAN = 'it',
+  UKRAINIAN = 'ua',
+  POLAND = 'pl',
 }

@@ -32,7 +32,7 @@ export class MainService {
     const event = await this.eventService.findAll();
     const help = await this.helpService.findAll();
     const partner = await this.partnerService.findAll();
-    const contact = await this.contactService.findAll();
+    // const contact = await this.contactService.findByLanguage();
 
     if (!worth) {
       throw new NotFoundException('Worth not found');
@@ -57,17 +57,17 @@ export class MainService {
       addallmodelsDto.partner = partner;
     }
 
-    if (!contact) {
-      throw new NotFoundException('Contact not found');
-    } else {
-      addallmodelsDto.contact = contact;
-    }
+    // if (!contact) {
+    //   throw new NotFoundException('Contact not found');
+    // } else {
+    //   addallmodelsDto.contact = contact;
+    // }
 
     const newMain = new this.mainModel({
       ...addallmodelsDto,
       worth: addallmodelsDto.worth,
       event: addallmodelsDto.event,
-      contact: addallmodelsDto.contact,
+      // contact: addallmodelsDto.contact,
       partner: addallmodelsDto.partner,
       help: addallmodelsDto.help,
     });

@@ -13,7 +13,7 @@ import { ContactService } from './contact.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { Language } from '../util/enum';
+import { ELanguage } from '../util/enum';
 
 @ApiTags('contact')
 @Controller('contact')
@@ -25,17 +25,17 @@ export class ContactController {
     return this.contactService.create(createContactDto);
   }
 
-  @Get()
-  findAll() {
-    return this.contactService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.contactService.findAll();
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.contactService.findOne(id);
   }
   @Get()
-  findAllLanguage(@Query('language') language: Language) {
+  async findAllLanguge(@Query('language') language: ELanguage) {
     return this.contactService.findByLanguage(language);
   }
 
