@@ -5,6 +5,7 @@ import { Contact } from 'src/resources/contact/entities/contact.entity';
 import { Event } from 'src/resources/events/entities/event.entity';
 import { Help } from 'src/resources/help/entities/help.entity';
 import { Partner } from 'src/resources/partner/entities/partner.entity';
+import { ELanguage } from 'src/resources/util/enum';
 import { Worth } from 'src/resources/worth/entities/worth.entity';
 
 export type MainDocument = HydratedDocument<Main>;
@@ -15,42 +16,16 @@ export class Main {
     example: 'Main',
   })
   @Prop({ required: true })
-  titleMainUA: string;
+  titleMain: string;
 
   @ApiProperty({
     description: 'This information about company',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
   @Prop({ required: true })
-  descriptionUA: string;
+  description: string;
 
-  @ApiProperty({
-    title: 'Title Main',
-    example: 'Main',
-  })
-  @Prop({ required: true })
-  titleMainEN: string;
-
-  @ApiProperty({
-    description: 'This information about company',
-    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
-  })
-  @Prop({ required: true })
-  descriptionEN: string;
-
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Worth' }] })
-  worth: Worth[];
-
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }] })
-  event: Event[];
-
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Help' }] })
-  help: Help[];
-
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Partner' }] })
-  partner: Partner[];
-
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }] })
-  contact: Contact[];
+  @Prop({ required: true, enum: ELanguage, default: ELanguage.UKRAINIAN })
+  language: ELanguage;
 }
 export const MainSchema = SchemaFactory.createForClass(Main);

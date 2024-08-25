@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { SectionaboutService } from './sectionabout.service';
 import { CreateSectionaboutDto } from './dto/create-sectionabout.dto';
 import { UpdateSectionaboutDto } from './dto/update-sectionabout.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ELanguage } from '../util/enum';
 
 @ApiTags('sectionabout')
 @Controller('sectionabout')
@@ -22,14 +24,19 @@ export class SectionaboutController {
     return this.sectionaboutService.create(createSectionaboutDto);
   }
 
-  @Get()
-  findAll() {
-    return this.sectionaboutService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.sectionaboutService.findAll();
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.sectionaboutService.findOne(id);
+  }
+
+  @Get()
+  async findAllLanguge(@Query('language') language: ELanguage) {
+    return this.sectionaboutService.findByLanguage(language);
   }
 
   @Patch(':id')

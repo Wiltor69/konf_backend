@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import mongoose, { HydratedDocument, Types } from 'mongoose';
+import { ELanguage } from 'src/resources/util/enum';
 
 export type SectionaboutDocument = HydratedDocument<Sectionabout>;
 
@@ -11,28 +12,14 @@ export class Sectionabout {
     example: 'New element',
   })
   @Prop({ required: true })
-  titleElementUA: string;
+  titleElement: string;
 
   @ApiProperty({
     description: 'A brief description of the element',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
   @Prop({ required: true })
-  descriptionUA: string;
-
-  @ApiProperty({
-    title: 'Title Section element',
-    example: 'New element',
-  })
-  @Prop({ required: true })
-  titleElementEN: string;
-
-  @ApiProperty({
-    description: 'A brief description of the element',
-    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
-  })
-  @Prop({ required: true })
-  descriptionEN: string;
+  description: string;
 
   @ApiProperty({
     description: 'This is id of Image',
@@ -40,5 +27,8 @@ export class Sectionabout {
   })
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Image' })
   image: Types.ObjectId;
+
+  @Prop({ required: true, enum: ELanguage, default: ELanguage.UKRAINIAN })
+  language: ELanguage;
 }
 export const SectionaboutSchema = SchemaFactory.createForClass(Sectionabout);

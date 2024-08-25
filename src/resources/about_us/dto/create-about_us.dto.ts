@@ -1,27 +1,50 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsOptional } from 'class-validator';
+import { ELanguage } from 'src/resources/util/enum';
 
 export class CreateAboutUsDto {
   @ApiProperty({
     title: 'Title About us',
     example: 'About us',
   })
-  titleAboutUA: string;
+  titleAbout: string;
 
   @ApiProperty({
     description: 'This information about company',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
-  descriptionUA: string;
+  description: string;
 
   @ApiProperty({
-    title: 'Title About us',
-    example: 'About us',
-  })
-  titleAboutEN: string;
-
-  @ApiProperty({
-    description: 'This information about company',
+    description: 'A brief description of the hero section',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
-  descriptionEN: string;
+  description1: string;
+
+  @ApiProperty({
+    description: 'A brief description of the hero section',
+    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
+  })
+  description2: string;
+
+  @ApiProperty({
+    description: 'A brief description of the hero section',
+    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
+  })
+  description3: string;
+
+  @ApiProperty({
+    description: 'This is id of Image',
+    example: '362876387467846',
+  })
+  imageId: string;
+
+  @ApiProperty({
+    description: 'This is the language',
+    example: 'ua',
+    required: true,
+  })
+  @IsOptional()
+  @IsEnum(ELanguage)
+  language: ELanguage;
 }

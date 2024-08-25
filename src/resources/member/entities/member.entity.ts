@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import mongoose, { HydratedDocument, Types } from 'mongoose';
+import { ELanguage } from 'src/resources/util/enum';
 
 export type MemberDocument = HydratedDocument<Member>;
 
@@ -11,42 +12,21 @@ export class Member {
     example: 'Merry Jackson',
   })
   @Prop({ required: true })
-  nameUA: string;
+  name: string;
 
   @ApiProperty({
     title: 'The role of member',
     example: 'Volonter',
   })
   @Prop({ required: true })
-  roleUA: string;
+  role: string;
 
   @ApiProperty({
     description: 'A brief description of the member',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
   @Prop({ required: true })
-  descriptionUA: string;
-
-  @ApiProperty({
-    title: 'The name of member',
-    example: 'Merry Jackson',
-  })
-  @Prop({ required: true })
-  nameEN: string;
-
-  @ApiProperty({
-    title: 'The role of member',
-    example: 'Volonter',
-  })
-  @Prop({ required: true })
-  roleEN: string;
-
-  @ApiProperty({
-    description: 'A brief description of the member',
-    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
-  })
-  @Prop({ required: true })
-  descriptionEN: string;
+  description: string;
 
   @ApiProperty({
     description: 'This is id of Image',
@@ -54,5 +34,8 @@ export class Member {
   })
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Image' })
   image: Types.ObjectId;
+
+  @Prop({ required: true, enum: ELanguage, default: ELanguage.UKRAINIAN })
+  language: ELanguage;
 }
 export const MemberSchema = SchemaFactory.createForClass(Member);

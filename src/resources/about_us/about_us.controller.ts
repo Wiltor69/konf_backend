@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { AboutUsService } from './about_us.service';
 import { CreateAboutUsDto } from './dto/create-about_us.dto';
 import { UpdateAboutUsDto } from './dto/update-about_us.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ELanguage } from '../util/enum';
 
 @ApiTags('about-us')
 @Controller('about-us')
@@ -22,14 +24,19 @@ export class AboutUsController {
     return this.aboutUsService.create(createAboutUsDto);
   }
 
-  @Get()
-  findAll() {
-    return this.aboutUsService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.aboutUsService.findAll();
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.aboutUsService.findOne(id);
+  }
+
+  @Get()
+  async findAllLanguge(@Query('language') language: ELanguage) {
+    return this.aboutUsService.findByLanguage(language);
   }
 
   @Patch(':id')

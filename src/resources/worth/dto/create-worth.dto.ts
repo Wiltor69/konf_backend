@@ -1,4 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsOptional } from 'class-validator';
+import { ELanguage } from 'src/resources/util/enum';
 
 export class CreateWorthDto {
   @ApiProperty({
@@ -7,13 +9,13 @@ export class CreateWorthDto {
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     required: true,
   })
-  textWorthUA: string;
-
+  textWorth: string;
   @ApiProperty({
-    description: 'The text of the worth',
-    example:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    description: 'This is the language',
+    example: 'ua',
     required: true,
   })
-  textWorthEN: string;
+  @IsOptional()
+  @IsEnum(ELanguage)
+  language: ELanguage;
 }

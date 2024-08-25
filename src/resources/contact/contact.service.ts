@@ -4,6 +4,7 @@ import { UpdateContactDto } from './dto/update-contact.dto';
 import { Contact, ContactDocument } from './entities/contact.entity';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { ELanguage } from '../util/enum';
 
 @Injectable()
 export class ContactService {
@@ -22,6 +23,10 @@ export class ContactService {
 
   findOne(id: string): Promise<Contact> {
     return this.contactModel.findById(id);
+  }
+
+  async findByLanguage(language: ELanguage): Promise<Contact[]> {
+    return this.contactModel.find({ language }).exec();
   }
 
   update(id: string, updateContactDto: UpdateContactDto): Promise<Contact> {

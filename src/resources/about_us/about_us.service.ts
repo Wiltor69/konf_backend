@@ -2,61 +2,44 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAboutUsDto } from './dto/create-about_us.dto';
 import { UpdateAboutUsDto } from './dto/update-about_us.dto';
 import { AboutUs, AboutUsDocument } from './entities/about_us.entity';
-import { HeroaboutService } from '../heroabout/heroabout.service';
-import { SectionaboutService } from '../sectionabout/sectionabout.service';
-import { MemberService } from '../member/member.service';
+
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { AddAllAboutDto } from './dto/add-all-about.dto';
+import { AddImageAboutDto } from './dto/add-image-about.dto';
+import { ImageService } from '../image/image.service';
+import { ELanguage } from '../util/enum';
 
 @Injectable()
 export class AboutUsService {
   constructor(
     @InjectModel(AboutUs.name) private aboutUsModel: Model<AboutUsDocument>,
-    private readonly heroAboutService: HeroaboutService,
-    private readonly sectionAboutService: SectionaboutService,
-    private readonly memberService: MemberService,
+    private readonly imageService: ImageService,
   ) {}
 
   async create(createAboutUsDto: CreateAboutUsDto) {
-    const addallaboutDto: AddAllAboutDto = { ...createAboutUsDto };
-
-    const heroAbout = await this.heroAboutService.findAll();
-    const sectionAbout = await this.sectionAboutService.findAll();
-    const member = await this.memberService.findAll();
-
-    if (!heroAbout) {
-      throw new NotFoundException('HeroAbout not found');
+    const addImageAboutDto: AddImageAboutDto = { ...createAboutUsDto };
+    const isImage = await this.imageService.findOne(createAboutUsDto.imageId);
+    if (!isImage) {
+      throw new NotFoundException('Image not found');
     } else {
-      addallaboutDto.heroAbout = heroAbout;
+      addImageAboutDto.image = isImage;
     }
-    if (!sectionAbout) {
-      throw new NotFoundException('SectionAbout not found');
-    } else {
-      addallaboutDto.sectionAbout = sectionAbout;
-    }
-    if (!member) {
-      throw new NotFoundException('Member not found');
-    } else {
-      addallaboutDto.member = member;
-    }
-
-    const newAboutUs = new this.aboutUsModel({
-      ...addallaboutDto,
+    const newAbout = new this.aboutUsModel({
+      ...addImageAboutDto,
+      isImage: addImageAboutDto.image,
     });
-    return await newAboutUs.save();
+    return await newAbout.save();
   }
 
   findAll(): Promise<AboutUs[]> {
-    return this.aboutUsModel
-      .find()
-      .populate(['heroAbout', 'sectionAbout', 'member']);
+    return this.aboutUsModel.find().populate('image');
   }
 
   findOne(id: string): Promise<AboutUs> {
-    return this.aboutUsModel
-      .findById(id)
-      .populate(['heroAbout', 'sectionAbout', 'member']);
+    return this.aboutUsModel.findById(id).populate('image');
+  }
+  async findByLanguage(language: ELanguage): Promise<AboutUs[]> {
+    return this.aboutUsModel.find({ language }).populate('image');
   }
 
   update(id: string, updateAboutUsDto: UpdateAboutUsDto): Promise<AboutUs> {

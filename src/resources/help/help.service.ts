@@ -6,6 +6,7 @@ import { Help, HelpDocument } from './entities/help.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { AddImageHelpDto } from './dto/add-image-help.dto';
+import { ELanguage } from '../util/enum';
 
 @Injectable()
 export class HelpService {
@@ -37,6 +38,10 @@ export class HelpService {
 
   findOne(id: string): Promise<Help> {
     return this.helpModel.findById(id).populate('image');
+  }
+
+  async findByLanguage(language: ELanguage): Promise<Help[]> {
+    return this.helpModel.find({ language }).populate('image');
   }
 
   update(id: string, updateHelpDto: UpdateHelpDto): Promise<Help> {

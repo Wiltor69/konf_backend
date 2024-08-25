@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { HelpService } from './help.service';
 import { CreateHelpDto } from './dto/create-help.dto';
 import { UpdateHelpDto } from './dto/update-help.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ELanguage } from '../util/enum';
 @ApiTags('help')
 @Controller('help')
 export class HelpController {
@@ -21,14 +23,19 @@ export class HelpController {
     return this.helpService.create(createHelpDto);
   }
 
-  @Get()
-  findAll() {
-    return this.helpService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.helpService.findAll();
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.helpService.findOne(id);
+  }
+
+  @Get()
+  async findAllLanguge(@Query('language') language: ELanguage) {
+    return this.helpService.findByLanguage(language);
   }
 
   @Patch(':id')

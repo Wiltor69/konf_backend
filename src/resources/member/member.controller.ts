@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ELanguage } from '../util/enum';
 
 @ApiTags('member')
 @Controller('member')
@@ -22,14 +24,19 @@ export class MemberController {
     return this.memberService.create(createMemberDto);
   }
 
-  @Get()
-  findAll() {
-    return this.memberService.findAll();
-  }
+  // @Get()
+  // findAll() {
+  //   return this.memberService.findAll();
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.memberService.findOne(id);
+  }
+
+  @Get()
+  async findAllLanguge(@Query('language') language: ELanguage) {
+    return this.memberService.findByLanguage(language);
   }
 
   @Patch(':id')

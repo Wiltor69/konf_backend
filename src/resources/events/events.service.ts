@@ -7,6 +7,7 @@ import { Model } from 'mongoose';
 import { Event, EventDocument } from './entities/event.entity';
 import { ImageService } from '../image/image.service';
 import { AddImageEventDto } from './dto/add-image-event.dto';
+import { ELanguage } from '../util/enum';
 
 @Injectable()
 export class EventsService {
@@ -40,6 +41,10 @@ export class EventsService {
 
   findOne(id: string): Promise<Event> {
     return this.eventModel.findById(id).populate('image');
+  }
+
+  async findByLanguage(language: ELanguage): Promise<Event[]> {
+    return this.eventModel.find({ language }).populate('image');
   }
 
   update(id: string, updateEventDto: UpdateEventDto): Promise<Event> {
