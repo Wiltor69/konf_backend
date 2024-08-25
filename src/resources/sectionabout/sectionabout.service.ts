@@ -9,6 +9,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ImageService } from '../image/image.service';
 import { Model } from 'mongoose';
 import { AddImageSectionDto } from './dto/add-image-section.dto';
+import { ELanguage } from '../util/enum';
 
 @Injectable()
 export class SectionaboutService {
@@ -42,6 +43,10 @@ export class SectionaboutService {
 
   findOne(id: string): Promise<Sectionabout> {
     return this.sectionaboutModel.findById(id).populate('image');
+  }
+
+  async findByLanguage(language: ELanguage): Promise<Sectionabout[]> {
+    return this.sectionaboutModel.find({ language }).populate('image');
   }
 
   update(

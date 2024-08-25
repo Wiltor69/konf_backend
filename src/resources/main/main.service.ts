@@ -1,89 +1,31 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateMainDto } from './dto/create-main.dto';
 import { UpdateMainDto } from './dto/update-main.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { WorthService } from '../worth/worth.service';
-import { EventsService } from '../events/events.service';
-import { HelpService } from '../help/help.service';
+
 import { Model } from 'mongoose';
 import { Main, MainDocument } from './entities/main.entity';
-import { PartnerService } from '../partner/partner.service';
-import { ContactService } from '../contact/contact.service';
-import { AddAllModelsDto } from './dto/add-all-models.dto';
+import { ELanguage } from '../util/enum';
 
 @Injectable()
 export class MainService {
-  constructor(
-    @InjectModel(Main.name) private mainModel: Model<MainDocument>,
-    private readonly worthService: WorthService,
-    private readonly eventService: EventsService,
-    private readonly helpService: HelpService,
-    private readonly partnerService: PartnerService,
-    private readonly contactService: ContactService,
-  ) {}
+  constructor(@InjectModel(Main.name) private mainModel: Model<MainDocument>) {}
 
   async create(createMainDto: CreateMainDto) {
-    // const newMain = new this.mainModel(createMainDto);
-    // return newMain.save();
-
-    const addallmodelsDto: AddAllModelsDto = { ...createMainDto };
-
-    const worth = await this.worthService.findAll();
-    const event = await this.eventService.findAll();
-    const help = await this.helpService.findAll();
-    const partner = await this.partnerService.findAll();
-    // const contact = await this.contactService.findByLanguage();
-
-    if (!worth) {
-      throw new NotFoundException('Worth not found');
-    } else {
-      addallmodelsDto.worth = worth;
-    }
-
-    if (!event) {
-      throw new NotFoundException('Event not found');
-    } else {
-      addallmodelsDto.event = event;
-    }
-    if (!help) {
-      throw new NotFoundException('Help not found');
-    } else {
-      addallmodelsDto.help = help;
-    }
-
-    if (!partner) {
-      throw new NotFoundException('Partner not found');
-    } else {
-      addallmodelsDto.partner = partner;
-    }
-
-    // if (!contact) {
-    //   throw new NotFoundException('Contact not found');
-    // } else {
-    //   addallmodelsDto.contact = contact;
-    // }
-
-    const newMain = new this.mainModel({
-      ...addallmodelsDto,
-      worth: addallmodelsDto.worth,
-      event: addallmodelsDto.event,
-      // contact: addallmodelsDto.contact,
-      partner: addallmodelsDto.partner,
-      help: addallmodelsDto.help,
-    });
-    return await newMain.save();
+    const newMain = new this.mainModel(createMainDto);
+    return newMain.save();
   }
 
   findAll(): Promise<Main[]> {
-    return this.mainModel
-      .find()
-      .populate(['worth', 'event', 'contact', 'help', 'partner']);
+    return this.mainModel.find().exec();
   }
 
   findOne(id: string): Promise<Main> {
-    return this.mainModel
-      .findById(id)
-      .populate(['worth', 'event', 'contact', 'help', 'partner']);
+    return this.mainModel.findById(id).exec();
+  }
+
+  async findByLanguage(language: ELanguage): Promise<Main[]> {
+    return this.mainModel.find({ language }).exec();
   }
 
   update(id: string, updateMainDto: UpdateMainDto): Promise<Main> {

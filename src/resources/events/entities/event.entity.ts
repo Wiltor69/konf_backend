@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import mongoose, { HydratedDocument, Types } from 'mongoose';
+import { ELanguage } from 'src/resources/util/enum';
 
 export type EventDocument = HydratedDocument<Event>;
 @Schema()
@@ -10,56 +11,28 @@ export class Event {
     example: '10 September 2024 10:44',
   })
   @Prop({ required: true })
-  dataEventUA: string;
+  dataEvent: string;
 
   @ApiProperty({
     description: 'This is adress of Event',
     example: 'Kyev, Khreschatik 10',
   })
   @Prop({ required: true })
-  adressEventUA: string;
+  adressEvent: string;
 
   @ApiProperty({
     title: 'Title Event',
     example: 'New event',
   })
   @Prop({ required: true })
-  titleEventUA: string;
+  titleEvent: string;
 
   @ApiProperty({
     description: 'A brief description of the event',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
   @Prop({ required: true })
-  descriptionUA: string;
-
-  @ApiProperty({
-    description: 'This is data of event',
-    example: '10 September 2024 10:44',
-  })
-  @Prop({ required: true })
-  dataEventEN: string;
-
-  @ApiProperty({
-    description: 'This is adress of Event',
-    example: 'Kyev, Khreschatik 10',
-  })
-  @Prop({ required: true })
-  adressEventEN: string;
-
-  @ApiProperty({
-    title: 'Title Event',
-    example: 'New event',
-  })
-  @Prop({ required: true })
-  titleEventEN: string;
-
-  @ApiProperty({
-    description: 'A brief description of the event',
-    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
-  })
-  @Prop({ required: true })
-  descriptionEN: string;
+  description: string;
 
   @ApiProperty({
     description: 'This is id of Image',
@@ -67,5 +40,8 @@ export class Event {
   })
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Image' })
   image: Types.ObjectId;
+
+  @Prop({ required: true, enum: ELanguage, default: ELanguage.UKRAINIAN })
+  language: ELanguage;
 }
 export const EventSchema = SchemaFactory.createForClass(Event);

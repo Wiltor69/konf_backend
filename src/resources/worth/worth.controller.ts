@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { WorthService } from './worth.service';
 import { CreateWorthDto } from './dto/create-worth.dto';
 import { UpdateWorthDto } from './dto/update-worth.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ELanguage } from '../util/enum';
 @ApiTags('worth')
 @Controller('worth')
 export class WorthController {
@@ -21,9 +23,14 @@ export class WorthController {
     return this.worthService.create(createWorthDto);
   }
 
+  // @Get()
+  // findAll() {
+  //   return this.worthService.findAll();
+  // }
+
   @Get()
-  findAll() {
-    return this.worthService.findAll();
+  async findAllLanguge(@Query('language') language: ELanguage) {
+    return this.worthService.findByLanguage(language);
   }
 
   @Get(':id')

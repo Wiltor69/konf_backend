@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
+import { IsEnum, IsOptional } from 'class-validator';
 import { Image } from 'src/resources/image/entities/image.entity';
+import { ELanguage } from 'src/resources/util/enum';
 
 export class AddImageEventDto {
   @ApiProperty({
@@ -15,47 +17,32 @@ export class AddImageEventDto {
     description: 'This is data of event',
     example: '10 September 2024 10:44',
   })
-  dataEventUA: string;
+  dataEvent: string;
 
   @ApiProperty({
     description: 'This is adress of Event',
     example: 'Kyev, Khreschatik 10',
   })
-  adressEventUA: string;
+  adressEvent: string;
 
   @ApiProperty({
     title: 'Title Event',
     example: 'New event',
   })
-  titleEventUA: string;
+  titleEvent: string;
 
   @ApiProperty({
     description: 'A brief description of the event',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
-  descriptionUA: string;
+  description: string;
 
   @ApiProperty({
-    description: 'This is data of event',
-    example: '10 September 2024 10:44',
+    description: 'This is the language',
+    example: 'ua',
+    required: true,
   })
-  dataEventEN: string;
-
-  @ApiProperty({
-    description: 'This is adress of Event',
-    example: 'Kyev, Khreschatik 10',
-  })
-  adressEventEN: string;
-
-  @ApiProperty({
-    title: 'Title Event',
-    example: 'New event',
-  })
-  titleEventEN: string;
-
-  @ApiProperty({
-    description: 'A brief description of the event',
-    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
-  })
-  descriptionEN: string;
+  @IsOptional()
+  @IsEnum(ELanguage)
+  language: ELanguage;
 }

@@ -6,6 +6,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ImageService } from '../image/image.service';
 import { Model } from 'mongoose';
 import { AddImageMemberDto } from './dto/add-image-member.dto';
+import { ELanguage } from '../util/enum';
 
 @Injectable()
 export class MemberService {
@@ -36,6 +37,10 @@ export class MemberService {
 
   findOne(id: string): Promise<Member> {
     return this.memberModel.findById(id).populate('image');
+  }
+
+  async findByLanguage(language: ELanguage): Promise<Member[]> {
+    return this.memberModel.find({ language }).populate('image');
   }
 
   update(id: string, updateMemberDto: UpdateMemberDto): Promise<Member> {

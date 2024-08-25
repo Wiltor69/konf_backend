@@ -1,9 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import mongoose, { HydratedDocument } from 'mongoose';
-import { Heroabout } from 'src/resources/heroabout/entities/heroabout.entity';
-import { Member } from 'src/resources/member/entities/member.entity';
-import { Sectionabout } from 'src/resources/sectionabout/entities/sectionabout.entity';
+import mongoose, { HydratedDocument, Types } from 'mongoose';
+
+import { ELanguage } from 'src/resources/util/enum';
 
 export type AboutUsDocument = HydratedDocument<AboutUs>;
 @Schema()
@@ -13,38 +12,44 @@ export class AboutUs {
     example: 'About us',
   })
   @Prop({ required: true })
-  titleAboutUA: string;
+  titleAbout: string;
 
   @ApiProperty({
     description: 'This information about company',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
   @Prop({ required: true })
-  descriptionUA: string;
+  description: string;
 
   @ApiProperty({
-    title: 'Title About us',
-    example: 'About us',
-  })
-  @Prop({ required: true })
-  titleAboutEN: string;
-
-  @ApiProperty({
-    description: 'This information about company',
+    description: 'A brief description of the hero section',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
   @Prop({ required: true })
-  descriptionEN: string;
+  description1: string;
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Heroabout' }] })
-  heroAbout: Heroabout[];
-
-  @Prop({
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Sectionabout' }],
+  @ApiProperty({
+    description: 'A brief description of the hero section',
+    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
-  sectionAbout: Sectionabout[];
+  @Prop({ required: true })
+  description2: string;
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Member' }] })
-  member: Member[];
+  @ApiProperty({
+    description: 'A brief description of the hero section',
+    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
+  })
+  @Prop({ required: true })
+  description3: string;
+
+  @ApiProperty({
+    description: 'This is id of Image',
+    example: '362876387467846',
+  })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Image' })
+  image: Types.ObjectId;
+
+  @Prop({ required: true, enum: ELanguage, default: ELanguage.UKRAINIAN })
+  language: ELanguage;
 }
 export const AboutUsSchema = SchemaFactory.createForClass(AboutUs);

@@ -5,6 +5,7 @@ import { UpdateWorthDto } from './dto/update-worth.dto';
 import { Worth, WorthDocument } from './entities/worth.entity';
 
 import { Model } from 'mongoose';
+import { ELanguage } from '../util/enum';
 
 @Injectable()
 export class WorthService {
@@ -23,6 +24,10 @@ export class WorthService {
 
   findOne(id: string): Promise<Worth> {
     return this.worthModel.findById(id);
+  }
+
+  async findByLanguage(language: ELanguage): Promise<Worth[]> {
+    return this.worthModel.find({ language }).exec();
   }
 
   update(id: string, updateWorthDto: UpdateWorthDto): Promise<Worth> {

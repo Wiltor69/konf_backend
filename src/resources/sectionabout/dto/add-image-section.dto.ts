@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
+import { IsEnum, IsOptional } from 'class-validator';
 import { Image } from 'src/resources/image/entities/image.entity';
+import { ELanguage } from 'src/resources/util/enum';
 
 export class AddImageSectionDto {
   @ApiProperty({
@@ -15,23 +17,20 @@ export class AddImageSectionDto {
     title: 'Title Section element',
     example: 'New element',
   })
-  titleElementUA: string;
+  titleElement: string;
 
   @ApiProperty({
     description: 'A brief description of the element',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
-  descriptionUA: string;
+  description: string;
 
   @ApiProperty({
-    title: 'Title Section element',
-    example: 'New element',
+    description: 'This is the language',
+    example: 'ua',
+    required: true,
   })
-  titleElementEN: string;
-
-  @ApiProperty({
-    description: 'A brief description of the element',
-    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
-  })
-  descriptionEN: string;
+  @IsOptional()
+  @IsEnum(ELanguage)
+  language: ELanguage;
 }

@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
+import { IsEnum, IsOptional } from 'class-validator';
 import { Image } from 'src/resources/image/entities/image.entity';
+import { ELanguage } from 'src/resources/util/enum';
 
 export class AddImageMemberDto {
   @ApiProperty({
@@ -15,35 +17,26 @@ export class AddImageMemberDto {
     title: 'The name of member',
     example: 'Merry Jackson',
   })
-  nameUA: string;
+  name: string;
 
   @ApiProperty({
     title: 'The role of member',
     example: 'Volonter',
   })
-  roleUA: string;
+  role: string;
 
   @ApiProperty({
     description: 'A brief description of the member',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
-  descriptionUA: string;
+  description: string;
 
   @ApiProperty({
-    title: 'The name of member',
-    example: 'Merry Jackson',
+    description: 'This is the language',
+    example: 'ua',
+    required: true,
   })
-  nameEN: string;
-
-  @ApiProperty({
-    title: 'The role of member',
-    example: 'Volonter',
-  })
-  roleEN: string;
-
-  @ApiProperty({
-    description: 'A brief description of the member',
-    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
-  })
-  descriptionEN: string;
+  @IsOptional()
+  @IsEnum(ELanguage)
+  language: ELanguage;
 }

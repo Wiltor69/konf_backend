@@ -15,7 +15,7 @@ export class Contact {
   @Prop({ required: true })
   phoneCont: string;
 
-  @Prop({ required: true, enum: ELanguage })
+  @Prop({ required: true, enum: ELanguage, default: ELanguage.UKRAINIAN })
   language: ELanguage;
 }
 

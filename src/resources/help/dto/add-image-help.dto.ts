@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
+import { IsEnum, IsOptional } from 'class-validator';
 import { Image } from 'src/resources/image/entities/image.entity';
+import { ELanguage } from 'src/resources/util/enum';
 
 export class AddImageHelpDto {
   @ApiProperty({
@@ -15,11 +17,14 @@ export class AddImageHelpDto {
     description: 'Title Help',
     example: 'Help all people',
   })
-  titleHelpUA: string;
+  titleHelp: string;
 
   @ApiProperty({
-    description: 'Title Help',
-    example: 'Help all people',
+    description: 'This is the language',
+    example: 'ua',
+    required: true,
   })
-  titleHelpEN: string;
+  @IsOptional()
+  @IsEnum(ELanguage)
+  language: ELanguage;
 }
