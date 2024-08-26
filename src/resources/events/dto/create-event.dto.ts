@@ -16,6 +16,13 @@ export class CreateEventDto {
   adressEvent: string;
 
   @ApiProperty({
+    title: 'Link Event',
+    example: 'http://localhost:3000/....',
+    required: false,
+  })
+  linkEvent: string;
+
+  @ApiProperty({
     title: 'Title Event',
     example: 'New event',
   })
