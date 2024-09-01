@@ -11,6 +11,12 @@ export class UpdateHelpDto extends PartialType(CreateHelpDto) {
   titleHelp: string;
 
   @ApiProperty({
+    description: 'A brief description of the help',
+    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
+  })
+  description: string;
+
+  @ApiProperty({
     description: 'This is id of Image',
     example: '362876387467846',
   })

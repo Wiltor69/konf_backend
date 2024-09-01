@@ -14,6 +14,13 @@ export class Help {
   titleHelp: string;
 
   @ApiProperty({
+    description: 'A brief description of the help',
+    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
+  })
+  @Prop({ required: true })
+  description: string;
+
+  @ApiProperty({
     description: 'This is id of Image',
     example: '362876387467846',
   })
