@@ -15,7 +15,7 @@ import { CreateImageDto } from './dto/create-image.dto';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadImageDto } from './dto/upload-image.dto';
+
 @ApiTags('image')
 @Controller('image')
 export class ImageController {

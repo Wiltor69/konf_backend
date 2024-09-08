@@ -11,11 +11,8 @@ import { EventsModule } from './resources/events/events.module';
 import { HelpModule } from './resources/help/help.module';
 import { PartnerModule } from './resources/partner/partner.module';
 import { AboutUsModule } from './resources/about_us/about_us.module';
-
 import { SectionaboutModule } from './resources/sectionabout/sectionabout.module';
 import { MemberModule } from './resources/member/member.module';
-import { OurprojectsModule } from './resources/ourprojects/ourprojects.module';
-import { ProjectsModule } from './resources/projects/projects.module';
 
 @Module({
   imports: [
@@ -33,8 +30,6 @@ import { ProjectsModule } from './resources/projects/projects.module';
     HelpModule,
     PartnerModule,
     AboutUsModule,
-    OurprojectsModule,
-    ProjectsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
