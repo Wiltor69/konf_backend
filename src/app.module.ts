@@ -11,6 +11,7 @@ import { EventsModule } from './resources/events/events.module';
 import { HelpModule } from './resources/help/help.module';
 import { PartnerModule } from './resources/partner/partner.module';
 import { AboutUsModule } from './resources/about_us/about_us.module';
+
 import { SectionaboutModule } from './resources/sectionabout/sectionabout.module';
 import { MemberModule } from './resources/member/member.module';
 
