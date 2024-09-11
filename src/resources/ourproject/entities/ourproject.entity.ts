@@ -10,14 +10,14 @@ export class Ourproject {
     title: 'Title OurProject',
     example: 'Our Project',
   })
-  @Prop({ required: false })
+  @Prop({ required: true })
   titleOurProject: string;
 
   @ApiProperty({
     description: 'A brief description of the our project',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
-  @Prop({ required: false })
+  @Prop({ required: true })
   description: string;
 
   @ApiProperty({

@@ -15,6 +15,7 @@ import { AboutUsModule } from './resources/about_us/about_us.module';
 import { SectionaboutModule } from './resources/sectionabout/sectionabout.module';
 import { MemberModule } from './resources/member/member.module';
 import { OurprojectModule } from './resources/ourproject/ourproject.module';
+import { ProjectModule } from './resources/project/project.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { OurprojectModule } from './resources/ourproject/ourproject.module';
     PartnerModule,
     AboutUsModule,
     OurprojectModule,
+    ProjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],
