@@ -16,6 +16,7 @@ import { SectionaboutModule } from './resources/sectionabout/sectionabout.module
 import { MemberModule } from './resources/member/member.module';
 import { OurprojectModule } from './resources/ourproject/ourproject.module';
 import { ProjectModule } from './resources/project/project.module';
+import { RequisitModule } from './resources/requisit/requisit.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { ProjectModule } from './resources/project/project.module';
     AboutUsModule,
     OurprojectModule,
     ProjectModule,
+    RequisitModule,
   ],
   controllers: [AppController],
   providers: [AppService],
