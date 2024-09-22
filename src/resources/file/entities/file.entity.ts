@@ -11,22 +11,6 @@ export class File {
   @Prop({ required: true })
   filename: string;
 
-  @ApiProperty({
-    description: 'This is contentType',
-  })
-  @Prop({ required: true })
-  contentType: string;
-  @ApiProperty({
-    description: 'This is size',
-  })
-  @Prop({ required: true })
-  size: number;
-  @ApiProperty({
-    description: 'This is upload date',
-  })
-  @Prop({ required: true })
-  uploadDate: Date;
-
   @ApiProperty({ type: 'string', format: 'binary' })
   file: any;
 }

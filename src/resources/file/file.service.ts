@@ -19,7 +19,6 @@ export class FileService {
 
     const newFile = new this.fileModel({
       filename: file.originalname,
-      contentType: file.mimetype,
       content: fileContent,
     });
 

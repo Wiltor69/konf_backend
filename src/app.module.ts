@@ -20,6 +20,7 @@ import { RequisitModule } from './resources/requisit/requisit.module';
 import { FileModule } from './resources/file/file.module';
 import { VolontirModule } from './resources/volontir/volontir.module';
 import { SectionvolontirModule } from './resources/sectionvolontir/sectionvolontir.module';
+import { ContentGroupModule } from './resources/content-group/content-group.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { SectionvolontirModule } from './resources/sectionvolontir/sectionvolont
     FileModule,
     VolontirModule,
     SectionvolontirModule,
+    ContentGroupModule,
   ],
   controllers: [AppController],
   providers: [AppService],

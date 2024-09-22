@@ -5,6 +5,7 @@ import { ImageModule } from '../image/image.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Help, HelpSchema } from './entities/help.entity';
 import { ImageSchema, Image } from '../image/entities/image.entity';
+import { ContentGroupModule } from '../content-group/content-group.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ImageSchema, Image } from '../image/entities/image.entity';
       { name: Image.name, schema: ImageSchema },
     ]),
     ImageModule,
+    ContentGroupModule,
   ],
   controllers: [HelpController],
   providers: [HelpService],

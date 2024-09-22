@@ -7,19 +7,30 @@ import {
   Param,
   Delete,
   Query,
+  ValidationPipe,
+  UsePipes,
+  BadRequestException,
 } from '@nestjs/common';
 import { WorthService } from './worth.service';
 import { CreateWorthDto } from './dto/create-worth.dto';
 import { UpdateWorthDto } from './dto/update-worth.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ELanguage } from '../util/enum';
+import { Types } from 'mongoose';
 @ApiTags('worth')
 @Controller('worth')
 export class WorthController {
   constructor(private readonly worthService: WorthService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() createWorthDto: CreateWorthDto) {
+    if (
+      createWorthDto.contentGroupId &&
+      !Types.ObjectId.isValid(createWorthDto.contentGroupId)
+    ) {
+      throw new BadRequestException('Invalid id');
+    }
     return this.worthService.create(createWorthDto);
   }
 

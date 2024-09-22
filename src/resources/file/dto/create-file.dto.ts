@@ -5,7 +5,7 @@ export class CreateFileDto {
     description: 'This is filename',
     required: true,
   })
-  filename: string;
+  filename?: string;
 
   @ApiProperty({ type: 'string', format: 'binary' })
   file: any;

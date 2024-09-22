@@ -8,12 +8,16 @@ import {
   Delete,
   Put,
   Query,
+  UsePipes,
+  ValidationPipe,
+  BadRequestException,
 } from '@nestjs/common';
 import { ContactService } from './contact.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ELanguage } from '../util/enum';
+import { Types } from 'mongoose';
 
 @ApiTags('contact')
 @Controller('contact')
@@ -21,7 +25,14 @@ export class ContactController {
   constructor(private readonly contactService: ContactService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() createContactDto: CreateContactDto) {
+    if (
+      createContactDto.contentGroupId &&
+      !Types.ObjectId.isValid(createContactDto.contentGroupId)
+    ) {
+      throw new BadRequestException('Invalid id');
+    }
     return this.contactService.create(createContactDto);
   }
 

@@ -7,19 +7,30 @@ import {
   Param,
   Delete,
   Query,
+  ValidationPipe,
+  UsePipes,
+  BadRequestException,
 } from '@nestjs/common';
 import { MainService } from './main.service';
 import { CreateMainDto } from './dto/create-main.dto';
 import { UpdateMainDto } from './dto/update-main.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ELanguage } from '../util/enum';
+import { Types } from 'mongoose';
 @ApiTags('main')
 @Controller('main')
 export class MainController {
   constructor(private readonly mainService: MainService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() createMainDto: CreateMainDto) {
+    if (
+      createMainDto.contentGroupId &&
+      !Types.ObjectId.isValid(createMainDto.contentGroupId)
+    ) {
+      throw new BadRequestException('Invalid id');
+    }
     return this.mainService.create(createMainDto);
   }
 

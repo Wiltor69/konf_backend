@@ -5,6 +5,7 @@ import { Event, EventSchema } from './entities/event.entity';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ImageModule } from '../image/image.module';
 import { ImageSchema, Image } from '../image/entities/image.entity';
+import { ContentGroupModule } from '../content-group/content-group.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ImageSchema, Image } from '../image/entities/image.entity';
       { name: Image.name, schema: ImageSchema },
     ]),
     ImageModule,
+    ContentGroupModule,
   ],
   controllers: [EventsController],
   providers: [EventsService],
