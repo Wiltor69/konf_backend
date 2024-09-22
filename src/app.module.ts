@@ -17,7 +17,7 @@ import { MemberModule } from './resources/member/member.module';
 import { OurprojectModule } from './resources/ourproject/ourproject.module';
 import { ProjectModule } from './resources/project/project.module';
 import { RequisitModule } from './resources/requisit/requisit.module';
-import { FileModule } from './resources/file/file.module';
+
 import { VolontirModule } from './resources/volontir/volontir.module';
 import { SectionvolontirModule } from './resources/sectionvolontir/sectionvolontir.module';
 import { ContentGroupModule } from './resources/content-group/content-group.module';
@@ -41,7 +41,7 @@ import { ContentGroupModule } from './resources/content-group/content-group.modu
     OurprojectModule,
     ProjectModule,
     RequisitModule,
-    FileModule,
+
     VolontirModule,
     SectionvolontirModule,
     ContentGroupModule,
