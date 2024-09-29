@@ -7,12 +7,16 @@ import {
   Param,
   Delete,
   Query,
+  UsePipes,
+  ValidationPipe,
+  BadRequestException,
 } from '@nestjs/common';
 import { SectionaboutService } from './sectionabout.service';
 import { CreateSectionaboutDto } from './dto/create-sectionabout.dto';
 import { UpdateSectionaboutDto } from './dto/update-sectionabout.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ELanguage } from '../util/enum';
+import { Types } from 'mongoose';
 
 @ApiTags('sectionabout')
 @Controller('sectionabout')
@@ -20,7 +24,14 @@ export class SectionaboutController {
   constructor(private readonly sectionaboutService: SectionaboutService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() createSectionaboutDto: CreateSectionaboutDto) {
+    if (
+      createSectionaboutDto.contentGroupId &&
+      !Types.ObjectId.isValid(createSectionaboutDto.contentGroupId)
+    ) {
+      throw new BadRequestException('Invalid id');
+    }
     return this.sectionaboutService.create(createSectionaboutDto);
   }
 

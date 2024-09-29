@@ -8,6 +8,7 @@ import {
 } from './entities/sectionabout.entity';
 import { ImageSchema, Image } from '../image/entities/image.entity';
 import { ImageModule } from '../image/image.module';
+import { ContentGroupModule } from '../content-group/content-group.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ImageModule } from '../image/image.module';
       { name: Image.name, schema: ImageSchema },
     ]),
     ImageModule,
+    ContentGroupModule,
   ],
 
   controllers: [SectionaboutController],

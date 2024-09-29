@@ -7,12 +7,16 @@ import {
   Param,
   Delete,
   Query,
+  ValidationPipe,
+  UsePipes,
+  BadRequestException,
 } from '@nestjs/common';
 import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ELanguage } from '../util/enum';
+import { Types } from 'mongoose';
 
 @ApiTags('member')
 @Controller('member')
@@ -20,7 +24,14 @@ export class MemberController {
   constructor(private readonly memberService: MemberService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() createMemberDto: CreateMemberDto) {
+    if (
+      createMemberDto.contentGroupId &&
+      !Types.ObjectId.isValid(createMemberDto.contentGroupId)
+    ) {
+      throw new BadRequestException('Invalid id');
+    }
     return this.memberService.create(createMemberDto);
   }
 

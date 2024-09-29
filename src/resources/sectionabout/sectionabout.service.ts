@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateSectionaboutDto } from './dto/create-sectionabout.dto';
 import { UpdateSectionaboutDto } from './dto/update-sectionabout.dto';
 import {
@@ -10,6 +14,7 @@ import { ImageService } from '../image/image.service';
 import { Model } from 'mongoose';
 import { AddImageSectionDto } from './dto/add-image-section.dto';
 import { ELanguage } from '../util/enum';
+import { ContentGroupService } from '../content-group/content-group.service';
 
 @Injectable()
 export class SectionaboutService {
@@ -17,11 +22,15 @@ export class SectionaboutService {
     @InjectModel(Sectionabout.name)
     private sectionaboutModel: Model<SectionaboutDocument>,
     private readonly imageService: ImageService,
+    private readonly contentGroupService: ContentGroupService,
   ) {}
 
   async create(createSectionaboutDto: CreateSectionaboutDto) {
     const addImageSectionDto: AddImageSectionDto = { ...createSectionaboutDto };
-
+    const contentGroupId = await this.contentGroupService.ensureContentGroup(
+      createSectionaboutDto.contentGroupId,
+      createSectionaboutDto.language,
+    );
     const isImage = await this.imageService.findOne(
       createSectionaboutDto.imageId,
     );
@@ -33,6 +42,7 @@ export class SectionaboutService {
     const newElement = new this.sectionaboutModel({
       ...addImageSectionDto,
       isImage: addImageSectionDto.image,
+      contentGroupId,
     });
     return await newElement.save();
   }
@@ -58,7 +68,27 @@ export class SectionaboutService {
     });
   }
 
-  remove(id: string): Promise<Sectionabout> {
-    return this.sectionaboutModel.findByIdAndDelete(id);
+  async remove(id: string): Promise<void> {
+    const deleteSectionAboutUs = await this.sectionaboutModel
+      .findByIdAndDelete({ _id: id })
+      .exec();
+    if (!deleteSectionAboutUs) {
+      throw new NotFoundException(`Section About us with ID ${id} not found`);
+    }
+    try {
+      if (deleteSectionAboutUs.contentGroupId) {
+        await this.sectionaboutModel
+          .deleteMany({ contentGroupId: deleteSectionAboutUs.contentGroupId })
+          .exec();
+        await this.contentGroupService.deleteById(
+          deleteSectionAboutUs.contentGroupId,
+        );
+      }
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException(error.message);
+    }
   }
 }

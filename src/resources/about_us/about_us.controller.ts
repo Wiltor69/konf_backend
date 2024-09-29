@@ -7,12 +7,16 @@ import {
   Param,
   Delete,
   Query,
+  BadRequestException,
+  ValidationPipe,
+  UsePipes,
 } from '@nestjs/common';
 import { AboutUsService } from './about_us.service';
 import { CreateAboutUsDto } from './dto/create-about_us.dto';
 import { UpdateAboutUsDto } from './dto/update-about_us.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ELanguage } from '../util/enum';
+import { Types } from 'mongoose';
 
 @ApiTags('about-us')
 @Controller('about-us')
@@ -20,7 +24,14 @@ export class AboutUsController {
   constructor(private readonly aboutUsService: AboutUsService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() createAboutUsDto: CreateAboutUsDto) {
+    if (
+      createAboutUsDto.contentGroupId &&
+      !Types.ObjectId.isValid(createAboutUsDto.contentGroupId)
+    ) {
+      throw new BadRequestException('Invalid id');
+    }
     return this.aboutUsService.create(createAboutUsDto);
   }
 
