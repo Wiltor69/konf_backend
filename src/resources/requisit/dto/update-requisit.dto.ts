@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { CreateRequisitDto } from './create-requisit.dto';
 import { IsEnum, IsOptional } from 'class-validator';
 import { ELanguage } from 'src/resources/util/enum';
@@ -47,4 +47,10 @@ export class UpdateRequisitDto extends PartialType(CreateRequisitDto) {
   @IsOptional()
   @IsEnum(ELanguage)
   language: ELanguage;
+
+  @ApiPropertyOptional({
+    description: 'contentGroupId',
+    default: null,
+  })
+  contentGroupId: string;
 }

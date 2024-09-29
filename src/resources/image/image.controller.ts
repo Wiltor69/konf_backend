@@ -12,14 +12,24 @@ import {
 import { ImageService } from './image.service';
 import { CreateImageDto } from './dto/create-image.dto';
 
-import { ApiConsumes, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadImageDto } from './dto/upload-image.dto';
+
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 @ApiTags('image')
 @Controller('image')
 export class ImageController {
-  constructor(private readonly imageService: ImageService) {}
+  constructor(
+    private readonly imageService: ImageService,
+    private readonly cloudinaryService: CloudinaryService,
+  ) {}
 
   @Post()
   @ApiConsumes('multipart/form-data')
@@ -34,6 +44,34 @@ export class ImageController {
 
     const res = this.imageService.create(createImageDto, file);
     return res;
+  }
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiTags('Files')
+  @ApiOperation({
+    summary: 'Upload a file',
+    description: 'Upload a file to the server',
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'File to upload',
+    type: 'multipart/form-data',
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  }) // Опис тіла запиту
+  @ApiResponse({ status: 201, description: 'File uploaded successfully' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    const resourceType = file.mimetype.startsWith('image/') ? 'image' : 'raw';
+    return this.cloudinaryService.uploadImage(file, resourceType);
   }
 
   @Get()

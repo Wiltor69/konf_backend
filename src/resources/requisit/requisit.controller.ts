@@ -7,12 +7,16 @@ import {
   Param,
   Delete,
   Query,
+  ValidationPipe,
+  UsePipes,
+  BadRequestException,
 } from '@nestjs/common';
 import { RequisitService } from './requisit.service';
 import { CreateRequisitDto } from './dto/create-requisit.dto';
 import { UpdateRequisitDto } from './dto/update-requisit.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ELanguage } from '../util/enum';
+import { Types } from 'mongoose';
 
 @ApiTags('requisit')
 @Controller('requisit')
@@ -20,7 +24,14 @@ export class RequisitController {
   constructor(private readonly requisitService: RequisitService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() createRequisitDto: CreateRequisitDto) {
+    if (
+      createRequisitDto.contentGroupId &&
+      !Types.ObjectId.isValid(createRequisitDto.contentGroupId)
+    ) {
+      throw new BadRequestException('Invalid id');
+    }
     return this.requisitService.create(createRequisitDto);
   }
 
