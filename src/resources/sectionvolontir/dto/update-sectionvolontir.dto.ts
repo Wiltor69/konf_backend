@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { CreateSectionvolontirDto } from './create-sectionvolontir.dto';
 import { IsArray, IsEnum, IsOptional } from 'class-validator';
 import { ELanguage } from 'src/resources/util/enum';
@@ -31,4 +31,10 @@ export class UpdateSectionvolontirDto extends PartialType(
   @IsOptional()
   @IsEnum(ELanguage)
   language: ELanguage;
+
+  @ApiPropertyOptional({
+    description: 'contentGroupId',
+    default: null,
+  })
+  contentGroupId: string;
 }

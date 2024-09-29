@@ -5,6 +5,7 @@ import { Volontir, VolontirSchema } from './entities/volontir.entity';
 import { ImageSchema, Image } from '../image/entities/image.entity';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ImageModule } from '../image/image.module';
+import { ContentGroupModule } from '../content-group/content-group.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ImageModule } from '../image/image.module';
     ]),
 
     ImageModule,
+    ContentGroupModule,
   ],
   controllers: [VolontirController],
   providers: [VolontirService],

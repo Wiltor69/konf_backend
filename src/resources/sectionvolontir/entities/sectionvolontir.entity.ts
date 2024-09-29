@@ -5,7 +5,10 @@ import { ELanguage } from 'src/resources/util/enum';
 
 export type SectionvolontirDocument = HydratedDocument<Sectionvolontir>;
 
-@Schema()
+@Schema({
+  timestamps: true,
+  versionKey: false,
+})
 export class Sectionvolontir {
   @ApiProperty({
     title: 'Title Section of volontir',
@@ -30,12 +33,28 @@ export class Sectionvolontir {
   language: ELanguage;
 
   @ApiProperty({
-    description: 'Base entity ID',
+    description: 'contentGroupId',
     example: '60d0fe4f5311236168a109ca',
-    required: false,
+    required: true,
   })
-  @Prop({ required: false, default: null })
-  baseEntityId: string;
+  @Prop({ required: true, default: null })
+  contentGroupId: string;
+
+  @ApiProperty({
+    description: 'Creation date (automatically generated)',
+    example: '2023-04-01T00:00:00.000Z',
+    readOnly: true,
+  })
+  @Prop()
+  createdAt: Date;
+
+  @ApiProperty({
+    description: 'Last update date (automatically generated)',
+    example: '2023-04-01T00:00:00.000Z',
+    readOnly: true,
+  })
+  @Prop()
+  updatedAt: Date;
 }
 
 export const SectionvolontirSchema =

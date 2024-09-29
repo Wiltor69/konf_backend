@@ -29,8 +29,8 @@ export class SectionvolontirController {
   @UsePipes(new ValidationPipe())
   create(@Body() createSectionvolontirDto: CreateSectionvolontirDto) {
     if (
-      createSectionvolontirDto?.baseEntityId &&
-      !Types.ObjectId.isValid(createSectionvolontirDto.baseEntityId)
+      createSectionvolontirDto.contentGroupId &&
+      !Types.ObjectId.isValid(createSectionvolontirDto.contentGroupId)
     ) {
       throw new BadRequestException('Invalid id');
     }

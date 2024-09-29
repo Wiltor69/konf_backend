@@ -7,12 +7,16 @@ import {
   Param,
   Delete,
   Query,
+  ValidationPipe,
+  UsePipes,
+  BadRequestException,
 } from '@nestjs/common';
 import { VolontirService } from './volontir.service';
 import { CreateVolontirDto } from './dto/create-volontir.dto';
 import { UpdateVolontirDto } from './dto/update-volontir.dto';
 import { ELanguage } from '../util/enum';
 import { ApiTags } from '@nestjs/swagger';
+import { Types } from 'mongoose';
 
 @ApiTags('volontir')
 @Controller('volontir')
@@ -20,7 +24,14 @@ export class VolontirController {
   constructor(private readonly volontirService: VolontirService) {}
 
   @Post()
+  @UsePipes(new ValidationPipe())
   create(@Body() createVolontirDto: CreateVolontirDto) {
+    if (
+      createVolontirDto.contentGroupId &&
+      !Types.ObjectId.isValid(createVolontirDto.contentGroupId)
+    ) {
+      throw new BadRequestException('Invalid id');
+    }
     return this.volontirService.create(createVolontirDto);
   }
 

@@ -33,10 +33,8 @@ export class AddImageSectionvolontirDto {
   language: ELanguage;
 
   @ApiPropertyOptional({
-    description: 'Base entity ID',
+    description: 'contentGroupId',
     default: null,
   })
-  @IsOptional()
-  @IsString()
-  baseEntityId?: string;
+  contentGroupId: string;
 }

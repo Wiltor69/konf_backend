@@ -48,7 +48,6 @@ export class ImageController {
 
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
-  @ApiTags('Files')
   @ApiOperation({
     summary: 'Upload a file',
     description: 'Upload a file to the server',
