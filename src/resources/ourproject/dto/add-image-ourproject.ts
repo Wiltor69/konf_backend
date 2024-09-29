@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsEnum, IsOptional } from 'class-validator';
 import { Image } from 'src/resources/image/entities/image.entity';
@@ -21,9 +21,8 @@ export class AddImageOurProjectDto {
 
   @ApiProperty({
     description: 'A brief description of the our project',
-    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
-  description: string;
+  description: string[];
 
   @ApiProperty({
     description: 'This is the language',
@@ -33,4 +32,10 @@ export class AddImageOurProjectDto {
   @IsOptional()
   @IsEnum(ELanguage)
   language: ELanguage;
+
+  @ApiPropertyOptional({
+    description: 'contentGroupId',
+    default: null,
+  })
+  contentGroupId: string;
 }

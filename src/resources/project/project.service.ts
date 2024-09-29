@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -7,18 +11,24 @@ import { Model } from 'mongoose';
 import { ImageService } from '../image/image.service';
 import { AddImageProjectDto } from './dto/add-image-project';
 import { ELanguage } from '../util/enum';
+import { ContentGroupService } from '../content-group/content-group.service';
 
 @Injectable()
 export class ProjectService {
   constructor(
     @InjectModel(Project.name) private projectModel: Model<Project>,
     private readonly imageService: ImageService,
+    private readonly contentGroupService: ContentGroupService,
   ) {}
 
   async create(createProjectDto: CreateProjectDto) {
     const addImageProjectDto: AddImageProjectDto = {
       ...createProjectDto,
     };
+    const contentGroupId = await this.contentGroupService.ensureContentGroup(
+      createProjectDto.contentGroupId,
+      createProjectDto.language,
+    );
     const isImage = await this.imageService.findOne(
       createProjectDto.imageProjectId,
     );
@@ -30,6 +40,7 @@ export class ProjectService {
     const newProject = new this.projectModel({
       ...addImageProjectDto,
       isImage: addImageProjectDto.image,
+      contentGroupId,
     });
     return await newProject.save();
   }
@@ -52,7 +63,25 @@ export class ProjectService {
     );
   }
 
-  remove(id: string) {
-    return this.projectModel.findByIdAndDelete(id);
+  async remove(id: string): Promise<void> {
+    const deleteProject = await this.projectModel
+      .findByIdAndDelete({ _id: id })
+      .exec();
+    if (!deleteProject) {
+      throw new NotFoundException(`Project with ID ${id} not found`);
+    }
+    try {
+      if (deleteProject.contentGroupId) {
+        await this.projectModel
+          .deleteMany({ contentGroupId: deleteProject.contentGroupId })
+          .exec();
+        await this.contentGroupService.deleteById(deleteProject.contentGroupId);
+      }
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new BadRequestException(error.message);
+    }
   }
 }

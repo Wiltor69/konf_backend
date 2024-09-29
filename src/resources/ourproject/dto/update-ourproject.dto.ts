@@ -1,4 +1,4 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { CreateOurprojectDto } from './create-ourproject.dto';
 import { IsEnum, IsOptional } from 'class-validator';
 import { ELanguage } from 'src/resources/util/enum';
@@ -12,9 +12,8 @@ export class UpdateOurprojectDto extends PartialType(CreateOurprojectDto) {
 
   @ApiProperty({
     description: 'A brief description of the our project',
-    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
-  description: string;
+  description: string[];
 
   @ApiProperty({
     description: 'This is id of Image',
@@ -30,4 +29,10 @@ export class UpdateOurprojectDto extends PartialType(CreateOurprojectDto) {
   @IsOptional()
   @IsEnum(ELanguage)
   language: ELanguage;
+
+  @ApiPropertyOptional({
+    description: 'contentGroupId',
+    default: null,
+  })
+  contentGroupId: string;
 }
