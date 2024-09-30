@@ -1,4 +1,89 @@
-<h1>Documentation</h1>
+<h1 align="center">Documentation</h1>
+
+<h2 align="center">Swagger</h2>
+
+## https://konf-backend.onrender.com/api
+
+or
+
+## http://localhost:3000/api
+
+<h2 align="center">Entity</h2>
+
+## image
+
+This Entity for upload image files
+
+## cloudinary
+
+The Entity for work with cloudinary
+
+## contact
+
+The Entity for footer block
+
+<h3 align="center">Main page</h3>
+
+## main
+
+The Entity for "hero" block
+
+## worth
+
+The Entity for "our core worths" block
+
+## events
+
+The Entity for "Announcement of events" block
+
+## help
+
+The Entity for "How we help" block
+
+## partner
+
+The Entity for "Our partners" block
+
+<h3 align="center">About us page</h3>
+
+## about_us
+
+The Entity for "hero" block second page
+
+## sectionabout
+
+The Entity for "history" block
+
+<h3 align="center">Our Projects page</h3>
+
+## ourproject
+
+The Entity for "hero" block third page
+
+## project
+
+The Entity for "projects" block
+
+## member
+
+The Entity for members block
+
+<h3 align="center">To Support page</h3>
+
+## requisit
+
+The bank requisits
+
+<h3 align="center">Volunteers page</h3>
+
+## volontir
+
+The Entity for "hero" block of page
+
+## sectionvolontir
+
+The Entity for volunteers section
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
