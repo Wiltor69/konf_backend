@@ -21,7 +21,8 @@ export class Project {
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
   @Prop({ required: true })
-  descriptionBold: string;
+  // Подзаголовок
+  subTitle: string;
 
   @ApiProperty({
     description: 'A brief description of the project',
@@ -34,7 +35,8 @@ export class Project {
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
   @Prop({ required: false })
-  descriptionEnd: string;
+  // Примечание
+  noteProject: string;
 
   @ApiProperty({
     description: 'A brief description of the when',

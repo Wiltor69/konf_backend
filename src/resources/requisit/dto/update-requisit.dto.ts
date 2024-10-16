@@ -9,35 +9,35 @@ export class UpdateRequisitDto extends PartialType(CreateRequisitDto) {
 
     required: true,
   })
-  nameOrganization: string[];
+  nameOrganization: string;
 
   @ApiProperty({
     description: 'This is the code',
 
     required: true,
   })
-  code: string[];
+  code: string;
 
   @ApiProperty({
     description: 'This is the Bank',
 
     required: true,
   })
-  bankName: string[];
+  bankName: string;
 
   @ApiProperty({
     description: 'This is the Recipient account number',
 
     required: true,
   })
-  accountNumber: string[];
+  accountNumber: string;
 
   @ApiProperty({
     description: 'This is the Purpose of payment',
 
     required: true,
   })
-  payment: string[];
+  payment: string;
 
   @ApiProperty({
     description: 'This is the language',

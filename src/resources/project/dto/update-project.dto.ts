@@ -14,7 +14,8 @@ export class UpdateProjectDto extends PartialType(CreateProjectDto) {
     description: 'A brief description of the bold project',
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
   })
-  descriptionBold: string;
+  // Подзаголовок
+  subTitle: string;
 
   @ApiProperty({
     description: 'A brief description of the project',
@@ -26,7 +27,8 @@ export class UpdateProjectDto extends PartialType(CreateProjectDto) {
     example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
     required: false,
   })
-  descriptionEnd: string;
+  // Примечание
+  noteProject: string;
 
   @ApiProperty({
     description: 'A brief description of the when',
