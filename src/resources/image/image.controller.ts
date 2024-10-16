@@ -8,17 +8,13 @@ import {
   UseInterceptors,
   UploadedFile,
   BadRequestException,
+  ParseFilePipeBuilder,
+  HttpStatus,
 } from '@nestjs/common';
 import { ImageService } from './image.service';
 import { CreateImageDto } from './dto/create-image.dto';
 
-import {
-  ApiBody,
-  ApiConsumes,
-  ApiOperation,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 
 import { FileInterceptor } from '@nestjs/platform-express';
 
@@ -36,7 +32,16 @@ export class ImageController {
   @UseInterceptors(FileInterceptor('file'))
   async createImage(
     @Body() createImageDto: CreateImageDto,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({ fileType: 'jpeg' })
+        .addFileTypeValidator({ fileType: 'png' })
+        .addFileTypeValidator({ fileType: 'bmp' })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    file: Express.Multer.File,
   ) {
     if (!file) {
       throw new BadRequestException('No file uploaded');
@@ -44,33 +49,6 @@ export class ImageController {
 
     const res = this.imageService.create(createImageDto, file);
     return res;
-  }
-
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  @ApiOperation({
-    summary: 'Upload a file',
-    description: 'Upload a file to the server',
-  })
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    description: 'File to upload',
-    type: 'multipart/form-data',
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  }) // Опис тіла запиту
-  @ApiResponse({ status: 201, description: 'File uploaded successfully' })
-  @ApiResponse({ status: 400, description: 'Bad request' })
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    const resourceType = file.mimetype.startsWith('image/') ? 'image' : 'raw';
-    return this.cloudinaryService.uploadImage(file, resourceType);
   }
 
   @Get()
