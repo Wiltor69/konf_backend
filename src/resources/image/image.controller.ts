@@ -8,8 +8,8 @@ import {
   UseInterceptors,
   UploadedFile,
   BadRequestException,
-  ParseFilePipeBuilder,
-  HttpStatus,
+  ParseFilePipe,
+  FileTypeValidator,
 } from '@nestjs/common';
 import { ImageService } from './image.service';
 import { CreateImageDto } from './dto/create-image.dto';
@@ -33,13 +33,11 @@ export class ImageController {
   async createImage(
     @Body() createImageDto: CreateImageDto,
     @UploadedFile(
-      new ParseFilePipeBuilder()
-        .addFileTypeValidator({ fileType: 'jpeg' })
-        .addFileTypeValidator({ fileType: 'png' })
-        .addFileTypeValidator({ fileType: 'bmp' })
-        .build({
-          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-        }),
+      new ParseFilePipe({
+        validators: [
+          new FileTypeValidator({ fileType: 'image/(jpeg|png|jpg)' }),
+        ],
+      }),
     )
     file: Express.Multer.File,
   ) {
