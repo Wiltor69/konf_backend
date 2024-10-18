@@ -21,6 +21,7 @@ import { RequisitModule } from './resources/requisit/requisit.module';
 import { VolontirModule } from './resources/volontir/volontir.module';
 import { SectionvolontirModule } from './resources/sectionvolontir/sectionvolontir.module';
 import { ContentGroupModule } from './resources/content-group/content-group.module';
+import { ReportModule } from './resources/report/report.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { ContentGroupModule } from './resources/content-group/content-group.modu
     VolontirModule,
     SectionvolontirModule,
     ContentGroupModule,
+    ReportModule,
   ],
   controllers: [AppController],
   providers: [AppService],
