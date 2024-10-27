@@ -74,6 +74,10 @@ The Entity for members block
 
 The bank requisits
 
+## report
+
+The reports for finance, events, project and other
+
 <h3 align="center">Volunteers page</h3>
 
 ## volontir
@@ -83,6 +87,10 @@ The Entity for "hero" block of page
 ## sectionvolontir
 
 The Entity for volunteers section
+
+## gallery
+
+The foto about works of volontiers
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
