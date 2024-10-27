@@ -22,6 +22,7 @@ import { VolontirModule } from './resources/volontir/volontir.module';
 import { SectionvolontirModule } from './resources/sectionvolontir/sectionvolontir.module';
 import { ContentGroupModule } from './resources/content-group/content-group.module';
 import { ReportModule } from './resources/report/report.module';
+import { GalleryModule } from './resources/gallery/gallery.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { ReportModule } from './resources/report/report.module';
     SectionvolontirModule,
     ContentGroupModule,
     ReportModule,
+    GalleryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
