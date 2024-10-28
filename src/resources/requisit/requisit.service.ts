@@ -34,18 +34,47 @@ export class RequisitService {
     return this.requisitModel.find().exec();
   }
 
-  findOne(id: string): Promise<Requisit> {
-    return this.requisitModel.findById(id);
+  async findOne(id: string): Promise<Requisit> {
+    const requisit = await this.requisitModel.findById(id).exec();
+    if (!requisit) {
+      throw new NotFoundException(`Requisit with ID ${id} not found`);
+    }
+    return requisit;
   }
 
   async findByLanguage(language: ELanguage): Promise<Requisit[]> {
     return this.requisitModel.find({ language }).exec();
   }
 
-  update(id: string, updateRequisitDto: UpdateRequisitDto): Promise<Requisit> {
-    return this.requisitModel.findByIdAndUpdate(id, updateRequisitDto, {
+  async update(
+    id: string,
+    updateRequisitDto: UpdateRequisitDto,
+  ): Promise<Requisit> {
+    const update = { $set: updateRequisitDto };
+    const requisit = await this.requisitModel.findByIdAndUpdate(id, update, {
       new: true,
     });
+    if (!requisit) {
+      throw new NotFoundException(`Requisit with ID ${id} not found`);
+    }
+    return requisit;
+  }
+
+  async updateAll(
+    contentGroupId: string,
+    updateRequisitDto: UpdateRequisitDto,
+  ): Promise<Requisit[]> {
+    const update = { $set: updateRequisitDto };
+    const result = await this.requisitModel.updateMany(
+      { contentGroupId },
+      update,
+    );
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No Requisit entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.requisitModel.find({ contentGroupId }).exec();
   }
 
   async remove(id: string): Promise<void> {

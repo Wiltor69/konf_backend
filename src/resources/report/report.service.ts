@@ -31,18 +31,46 @@ export class ReportService {
     return this.reportModel.find().exec();
   }
 
-  findOne(id: string): Promise<Report> {
-    return this.reportModel.findById(id);
+  async findOne(id: string): Promise<Report> {
+    const report = await this.reportModel.findById(id).exec();
+    if (!report) {
+      throw new NotFoundException(`Report with ID ${id} not found`);
+    }
+    return report;
   }
 
   async findByLanguage(language: ELanguage): Promise<Report[]> {
     return this.reportModel.find({ language }).exec();
   }
 
-  update(id: string, updateReportDto: UpdateReportDto): Promise<Report> {
-    return this.reportModel.findByIdAndUpdate(id, updateReportDto, {
+  async update(id: string, updateReportDto: UpdateReportDto): Promise<Report> {
+    const update = { $set: updateReportDto };
+    const report = await this.reportModel.findByIdAndUpdate(id, update, {
       new: true,
     });
+
+    if (!report) {
+      throw new NotFoundException(`Report with ID ${id} not found`);
+    }
+
+    return report;
+  }
+
+  async updateAll(
+    contentGroupId: string,
+    updateReportDto: UpdateReportDto,
+  ): Promise<Report[]> {
+    const update = { $set: updateReportDto };
+    const result = await this.reportModel.updateMany(
+      { contentGroupId },
+      update,
+    );
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No Report entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.reportModel.find({ contentGroupId }).exec();
   }
 
   async remove(id: string): Promise<void> {

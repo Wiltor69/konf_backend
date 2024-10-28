@@ -49,18 +49,47 @@ export class ProjectService {
     return this.projectModel.find().populate('image');
   }
 
-  findOne(id: string): Promise<Project> {
-    return this.projectModel.findById(id).populate('image');
+  async findOne(id: string): Promise<Project> {
+    const project = await this.projectModel
+      .findById(id)
+      .populate('image')
+      .exec();
+    if (!project) {
+      throw new NotFoundException(`Project with ID ${id} not found`);
+    }
+    return project;
   }
 
   async findByLanguage(language: ELanguage): Promise<Project[]> {
     return this.projectModel.find({ language }).populate('image');
   }
 
-  update(id: string, updateProjectDto: UpdateProjectDto) {
-    return (
-      this.projectModel.findByIdAndUpdate(id, updateProjectDto), { new: true }
+  async update(id: string, updateProjectDto: UpdateProjectDto) {
+    const update = { $set: updateProjectDto };
+    const project = await this.projectModel.findByIdAndUpdate(id, update, {
+      new: true,
+    });
+    if (!project) {
+      throw new NotFoundException(`Partner with ID ${id} not found`);
+    }
+    return project;
+  }
+
+  async updateAll(
+    contentGroupId: string,
+    updateProjectDto: UpdateProjectDto,
+  ): Promise<Project[]> {
+    const update = { $set: updateProjectDto };
+    const result = await this.projectModel.updateMany(
+      { contentGroupId },
+      update,
     );
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No Project entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.projectModel.find({ contentGroupId }).exec();
   }
 
   async remove(id: string): Promise<void> {

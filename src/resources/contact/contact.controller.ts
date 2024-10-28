@@ -55,6 +55,17 @@ export class ContactController {
     return this.contactService.update(id, updateContactDto);
   }
 
+  @Patch(':contentGroupId/bulk-update')
+  async updateAll(
+    @Param('contentGroupId') contentGroupId: string,
+    @Body() updateContactDto: UpdateContactDto,
+  ) {
+    return await this.contactService.updateAll(
+      contentGroupId,
+      updateContactDto,
+    );
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.contactService.remove(id);

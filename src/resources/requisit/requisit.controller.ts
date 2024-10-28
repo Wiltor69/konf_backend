@@ -58,6 +58,17 @@ export class RequisitController {
     return this.requisitService.update(id, updateRequisitDto);
   }
 
+  @Patch(':contentGroupId/bulk-update')
+  async updateAll(
+    @Param('contentGroupId') contentGroupId: string,
+    @Body() updateRequisitDto: UpdateRequisitDto,
+  ) {
+    return await this.requisitService.updateAll(
+      contentGroupId,
+      updateRequisitDto,
+    );
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.requisitService.remove(id);

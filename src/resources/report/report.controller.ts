@@ -56,6 +56,14 @@ export class ReportController {
     return this.reportService.update(id, updateReportDto);
   }
 
+  @Patch(':contentGroupId/bulk-update')
+  async updateAll(
+    @Param('contentGroupId') contentGroupId: string,
+    @Body() updateReportDto: UpdateReportDto,
+  ) {
+    return await this.reportService.updateAll(contentGroupId, updateReportDto);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.reportService.remove(id);

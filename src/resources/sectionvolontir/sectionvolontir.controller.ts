@@ -61,6 +61,17 @@ export class SectionvolontirController {
     return this.sectionvolontirService.update(id, updateSectionvolontirDto);
   }
 
+  @Patch(':contentGroupId/bulk-update')
+  async updateAll(
+    @Param('contentGroupId') contentGroupId: string,
+    @Body() updateSectionvolontirDto: UpdateSectionvolontirDto,
+  ) {
+    return await this.sectionvolontirService.updateAll(
+      contentGroupId,
+      updateSectionvolontirDto,
+    );
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.sectionvolontirService.remove(id);

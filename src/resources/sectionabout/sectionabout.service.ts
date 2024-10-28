@@ -51,21 +51,52 @@ export class SectionaboutService {
     return this.sectionaboutModel.find().populate('image');
   }
 
-  findOne(id: string): Promise<Sectionabout> {
-    return this.sectionaboutModel.findById(id).populate('image');
+  async findOne(id: string): Promise<Sectionabout> {
+    const sectionabout = await this.sectionaboutModel
+      .findById(id)
+      .populate('image')
+      .exec();
+    if (!sectionabout) {
+      throw new NotFoundException(`Sectionabout with ID ${id} not found`);
+    }
+    return sectionabout;
   }
 
   async findByLanguage(language: ELanguage): Promise<Sectionabout[]> {
     return this.sectionaboutModel.find({ language }).populate('image');
   }
 
-  update(
+  async update(
     id: string,
     updateSectionaboutDto: UpdateSectionaboutDto,
   ): Promise<Sectionabout> {
-    return this.sectionaboutModel.findByIdAndUpdate(id, updateSectionaboutDto, {
-      new: true,
-    });
+    const update = { $set: updateSectionaboutDto };
+    const sectionabout = await this.sectionaboutModel.findByIdAndUpdate(
+      id,
+      update,
+      { new: true },
+    );
+    if (!sectionabout) {
+      throw new NotFoundException(`Sectionabout with ID ${id} not found`);
+    }
+    return sectionabout;
+  }
+
+  async updateAll(
+    contentGroupId: string,
+    updateSectionaboutDto: UpdateSectionaboutDto,
+  ): Promise<Sectionabout[]> {
+    const update = { $set: updateSectionaboutDto };
+    const result = await this.sectionaboutModel.updateMany(
+      { contentGroupId },
+      update,
+    );
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No Sectionabout entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.sectionaboutModel.find({ contentGroupId }).exec();
   }
 
   async remove(id: string): Promise<void> {

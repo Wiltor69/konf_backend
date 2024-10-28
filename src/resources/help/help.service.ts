@@ -48,18 +48,41 @@ export class HelpService {
     return this.helpModel.find().populate('image');
   }
 
-  findOne(id: string): Promise<Help> {
-    return this.helpModel.findById(id).populate('image');
+  async findOne(id: string): Promise<Help> {
+    const help = await this.helpModel.findById(id).populate('image').exec();
+    if (!help) {
+      throw new NotFoundException(`Help with ID ${id} not found`);
+    }
+    return help;
   }
 
   async findByLanguage(language: ELanguage): Promise<Help[]> {
     return this.helpModel.find({ language }).populate('image');
   }
 
-  update(id: string, updateHelpDto: UpdateHelpDto): Promise<Help> {
-    return this.helpModel.findByIdAndUpdate(id, updateHelpDto, {
+  async update(id: string, updateHelpDto: UpdateHelpDto): Promise<Help> {
+    const update = { $set: updateHelpDto };
+    const help = await this.helpModel.findByIdAndUpdate(id, update, {
       new: true,
     });
+    if (!help) {
+      throw new NotFoundException(`Help with ID ${id} not found`);
+    }
+    return help;
+  }
+
+  async updateAll(
+    contentGroupId: string,
+    updateHelpDto: UpdateHelpDto,
+  ): Promise<Help[]> {
+    const update = { $set: updateHelpDto };
+    const result = await this.helpModel.updateMany({ contentGroupId }, update);
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No Help entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.helpModel.find({ contentGroupId }).exec();
   }
 
   async remove(id: string): Promise<void> {

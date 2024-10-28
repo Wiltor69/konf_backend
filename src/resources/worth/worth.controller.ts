@@ -54,6 +54,14 @@ export class WorthController {
     return this.worthService.update(id, updateWorthDto);
   }
 
+  @Patch(':contentGroupId/bulk-update')
+  async updateAll(
+    @Param('contentGroupId') contentGroupId: string,
+    @Body() updateWorthDto: UpdateWorthDto,
+  ) {
+    return await this.worthService.updateAll(contentGroupId, updateWorthDto);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.worthService.remove(id);

@@ -46,17 +46,49 @@ export class AboutUsService {
     return this.aboutUsModel.find().populate('image');
   }
 
-  findOne(id: string): Promise<AboutUs> {
-    return this.aboutUsModel.findById(id).populate('image');
+  async findOne(id: string): Promise<AboutUs> {
+    const aboutUs = await this.aboutUsModel
+      .findById(id)
+      .populate('image')
+      .exec();
+    if (!aboutUs) {
+      throw new NotFoundException(`AboutUs with ID ${id} not found`);
+    }
+    return aboutUs;
   }
   async findByLanguage(language: ELanguage): Promise<AboutUs[]> {
     return this.aboutUsModel.find({ language }).populate('image');
   }
 
-  update(id: string, updateAboutUsDto: UpdateAboutUsDto): Promise<AboutUs> {
-    return this.aboutUsModel.findByIdAndUpdate(id, updateAboutUsDto, {
+  async update(
+    id: string,
+    updateAboutUsDto: UpdateAboutUsDto,
+  ): Promise<AboutUs> {
+    const update = { $set: updateAboutUsDto };
+    const aboutUs = await this.aboutUsModel.findByIdAndUpdate(id, update, {
       new: true,
     });
+    if (!aboutUs) {
+      throw new NotFoundException(`AboutUs with ID ${id} not found`);
+    }
+    return aboutUs;
+  }
+
+  async updateAll(
+    contentGroupId: string,
+    updateAboutUsDto: UpdateAboutUsDto,
+  ): Promise<AboutUs[]> {
+    const update = { $set: updateAboutUsDto };
+    const result = await this.aboutUsModel.updateMany(
+      { contentGroupId },
+      update,
+    );
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No AboutUs entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.aboutUsModel.find({ contentGroupId }).exec();
   }
 
   async remove(id: string): Promise<void> {

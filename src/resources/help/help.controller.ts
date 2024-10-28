@@ -54,6 +54,14 @@ export class HelpController {
     return this.helpService.update(id, updateHelpDto);
   }
 
+  @Patch(':contentGroupId/bulk-update')
+  async updateAll(
+    @Param('contentGroupId') contentGroupId: string,
+    @Body() updateHelpDto: UpdateHelpDto,
+  ) {
+    return await this.helpService.updateAll(contentGroupId, updateHelpDto);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.helpService.remove(id);

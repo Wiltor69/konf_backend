@@ -55,6 +55,14 @@ export class MemberController {
     return this.memberService.update(id, updateMemberDto);
   }
 
+  @Patch(':contentGroupId/bulk-update')
+  async updateAll(
+    @Param('contentGroupId') contentGroupId: string,
+    @Body() updateMemberDto: UpdateMemberDto,
+  ) {
+    return await this.memberService.updateAll(contentGroupId, updateMemberDto);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.memberService.remove(id);

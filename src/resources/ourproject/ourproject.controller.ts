@@ -58,6 +58,17 @@ export class OurprojectController {
     return this.ourprojectService.update(id, updateOurprojectDto);
   }
 
+  @Patch(':contentGroupId/bulk-update')
+  async updateAll(
+    @Param('contentGroupId') contentGroupId: string,
+    @Body() updateOurprojectDto: UpdateOurprojectDto,
+  ) {
+    return await this.ourprojectService.updateAll(
+      contentGroupId,
+      updateOurprojectDto,
+    );
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.ourprojectService.remove(id);

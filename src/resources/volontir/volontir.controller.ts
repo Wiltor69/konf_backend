@@ -58,6 +58,17 @@ export class VolontirController {
     return this.volontirService.update(id, updateVolontirDto);
   }
 
+  @Patch(':contentGroupId/bulk-update')
+  async updateAll(
+    @Param('contentGroupId') contentGroupId: string,
+    @Body() updateVolontirDto: UpdateVolontirDto,
+  ) {
+    return await this.volontirService.updateAll(
+      contentGroupId,
+      updateVolontirDto,
+    );
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.volontirService.remove(id);

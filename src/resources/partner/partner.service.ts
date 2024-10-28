@@ -37,17 +37,54 @@ export class PartnerService {
     return this.partnerModel.find().populate('image');
   }
 
-  findOne(id: string): Promise<Partner> {
-    return this.partnerModel.findById(id).populate('image');
+  async findOne(id: string): Promise<Partner> {
+    const partner = await this.partnerModel
+      .findById(id)
+      .populate('image')
+      .exec();
+    if (!partner) {
+      throw new NotFoundException(`Partner with ID ${id} not found`);
+    }
+    return partner;
   }
 
-  update(id: string, updatePartnerDto: UpdatePartnerDto): Promise<Partner> {
-    return this.partnerModel.findByIdAndUpdate(id, updatePartnerDto, {
+  async update(
+    id: string,
+    updatePartnerDto: UpdatePartnerDto,
+  ): Promise<Partner> {
+    const update = { $set: updatePartnerDto };
+    const partner = await this.partnerModel.findByIdAndUpdate(id, update, {
       new: true,
     });
+    if (!partner) {
+      throw new NotFoundException(`Partner with ID ${id} not found`);
+    }
+    return partner;
   }
 
-  remove(id: string): Promise<Partner> {
-    return this.partnerModel.findByIdAndDelete(id);
+  async updateAll(
+    contentGroupId: string,
+    updatePartnerDto: UpdatePartnerDto,
+  ): Promise<Partner[]> {
+    const update = { $set: updatePartnerDto };
+    const result = await this.partnerModel.updateMany(
+      { contentGroupId },
+      update,
+    );
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No Partner entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.partnerModel.find({ contentGroupId }).exec();
   }
+
+  async remove(id: string): Promise<Partner> {
+    const partner = await this.partnerModel.findByIdAndDelete(id);
+    if (!partner) {
+      throw new NotFoundException(`Partner with ID ${id} not found`);
+    }
+    return partner;
+  }
+  
 }

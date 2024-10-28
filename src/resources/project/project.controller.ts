@@ -54,6 +54,17 @@ export class ProjectController {
     return this.projectService.update(id, updateProjectDto);
   }
 
+  @Patch(':contentGroupId/bulk-update')
+  async updateAll(
+    @Param('contentGroupId') contentGroupId: string,
+    @Body() updateProjectDto: UpdateProjectDto,
+  ) {
+    return await this.projectService.updateAll(
+      contentGroupId,
+      updateProjectDto,
+    );
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.projectService.remove(id);

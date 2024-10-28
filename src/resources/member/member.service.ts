@@ -46,18 +46,44 @@ export class MemberService {
     return this.memberModel.find().populate('image');
   }
 
-  findOne(id: string): Promise<Member> {
-    return this.memberModel.findById(id).populate('image');
+  async findOne(id: string): Promise<Member> {
+    const member = await this.memberModel.findById(id).populate('image').exec();
+    if (!member) {
+      throw new NotFoundException(`Member with ID ${id} not found`);
+    }
+    return member;
   }
 
   async findByLanguage(language: ELanguage): Promise<Member[]> {
     return this.memberModel.find({ language }).populate('image');
   }
 
-  update(id: string, updateMemberDto: UpdateMemberDto): Promise<Member> {
-    return this.memberModel.findByIdAndUpdate(id, updateMemberDto, {
+  async update(id: string, updateMemberDto: UpdateMemberDto): Promise<Member> {
+    const update = { $set: updateMemberDto };
+    const member = await this.memberModel.findByIdAndUpdate(id, update, {
       new: true,
     });
+    if (!member) {
+      throw new NotFoundException(`Member with ID ${id} not found`);
+    }
+    return member;
+  }
+
+  async updateAll(
+    contentGroupId: string,
+    updateMemberDto: UpdateMemberDto,
+  ): Promise<Member[]> {
+    const update = { $set: updateMemberDto };
+    const result = await this.memberModel.updateMany(
+      { contentGroupId },
+      update,
+    );
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No Member entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.memberModel.find({ contentGroupId }).exec();
   }
 
   async remove(id: string): Promise<void> {

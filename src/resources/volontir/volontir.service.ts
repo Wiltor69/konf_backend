@@ -44,18 +44,47 @@ export class VolontirService {
     return this.volontirModel.find().populate('image');
   }
 
-  findOne(id: string): Promise<Volontir> {
-    return this.volontirModel.findById(id).populate('image');
+  async findOne(id: string): Promise<Volontir> {
+    const volontir = await this.volontirModel
+      .findById(id)
+      .populate('image')
+      .exec();
+    if (!volontir) {
+      throw new NotFoundException(`Volontir with ID ${id} not found`);
+    }
+    return volontir;
   }
 
   async findByLanguage(language: ELanguage): Promise<Volontir[]> {
     return this.volontirModel.find({ language }).populate('image');
   }
 
-  update(id: string, updateVolontirDto: UpdateVolontirDto) {
-    return this.volontirModel.findByIdAndUpdate(id, updateVolontirDto, {
+  async update(id: string, updateVolontirDto: UpdateVolontirDto) {
+    const update = { $set: updateVolontirDto };
+    const volontir = await this.volontirModel.findByIdAndUpdate(id, update, {
       new: true,
     });
+    if (!volontir) {
+      throw new NotFoundException(`Sectionvolontir with ID ${id} not found`);
+    }
+    return volontir;
+  }
+
+  async updateAll(
+    contentGroupId: string,
+    updateVolontirDto: UpdateVolontirDto,
+  ): Promise<Volontir[]> {
+    const update = { $set: updateVolontirDto };
+    const result = await this.volontirModel.updateMany(
+      { contentGroupId },
+      update,
+    );
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No Volontir entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.volontirModel.find({ contentGroupId }).exec();
   }
 
   async remove(id: string): Promise<void> {

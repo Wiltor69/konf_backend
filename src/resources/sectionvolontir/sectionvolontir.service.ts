@@ -53,23 +53,52 @@ export class SectionvolontirService {
     return this.sectionvolontirModel.find().populate('image');
   }
 
-  findOne(id: string): Promise<Sectionvolontir> {
-    return this.sectionvolontirModel.findById(id).populate('image');
+  async findOne(id: string): Promise<Sectionvolontir> {
+    const sectionvolontir = await this.sectionvolontirModel
+      .findById(id)
+      .populate('image')
+      .exec();
+    if (!sectionvolontir) {
+      throw new NotFoundException(`Sectionvolontir with ID ${id} not found`);
+    }
+    return sectionvolontir;
   }
 
   async findByLanguage(language: ELanguage): Promise<Sectionvolontir[]> {
     return this.sectionvolontirModel.find({ language }).populate('image');
   }
 
-  update(
+  async update(
     id: string,
     updateSectionvolontirDto: UpdateSectionvolontirDto,
   ): Promise<Sectionvolontir> {
-    return this.sectionvolontirModel.findByIdAndUpdate(
+    const update = { $set: updateSectionvolontirDto };
+    const sectionvolontir = await this.sectionvolontirModel.findByIdAndUpdate(
       id,
-      updateSectionvolontirDto,
+      update,
       { new: true },
     );
+    if (!sectionvolontir) {
+      throw new NotFoundException(`Sectionvolontir with ID ${id} not found`);
+    }
+    return sectionvolontir;
+  }
+
+  async updateAll(
+    contentGroupId: string,
+    updateSectionvolontirDto: UpdateSectionvolontirDto,
+  ): Promise<Sectionvolontir[]> {
+    const update = { $set: updateSectionvolontirDto };
+    const result = await this.sectionvolontirModel.updateMany(
+      { contentGroupId },
+      update,
+    );
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No Sectionvolontir entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.sectionvolontirModel.find({ contentGroupId }).exec();
   }
 
   async remove(id: string): Promise<void> {

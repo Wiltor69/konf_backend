@@ -35,18 +35,47 @@ export class ContactService {
     return this.contactModel.find().exec();
   }
 
-  findOne(id: string): Promise<Contact> {
-    return this.contactModel.findById(id);
+  async findOne(id: string): Promise<Contact> {
+    const contact = await this.contactModel.findById(id).exec();
+    if (!contact) {
+      throw new NotFoundException(`Contact with ID ${id} not found`);
+    }
+    return contact;
   }
 
   async findByLanguage(language: ELanguage): Promise<Contact[]> {
     return this.contactModel.find({ language }).exec();
   }
 
-  update(id: string, updateContactDto: UpdateContactDto): Promise<Contact> {
-    return this.contactModel.findByIdAndUpdate(id, updateContactDto, {
+  async update(
+    id: string,
+    updateContactDto: UpdateContactDto,
+  ): Promise<Contact> {
+    const update = { $set: updateContactDto };
+    const contact = await this.contactModel.findByIdAndUpdate(id, update, {
       new: true,
     });
+    if (!contact) {
+      throw new NotFoundException(`Contact with ID ${id} not found`);
+    }
+    return contact;
+  }
+
+  async updateAll(
+    contentGroupId: string,
+    updateContactDto: UpdateContactDto,
+  ): Promise<Contact[]> {
+    const update = { $set: updateContactDto };
+    const result = await this.contactModel.updateMany(
+      { contentGroupId },
+      update,
+    );
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No Contact entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.contactModel.find({ contentGroupId }).exec();
   }
 
   async remove(id: string): Promise<void> {

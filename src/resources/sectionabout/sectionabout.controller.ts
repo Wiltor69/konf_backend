@@ -58,6 +58,17 @@ export class SectionaboutController {
     return this.sectionaboutService.update(id, updateSectionaboutDto);
   }
 
+  @Patch(':contentGroupId/bulk-update')
+  async updateAll(
+    @Param('contentGroupId') contentGroupId: string,
+    @Body() updateSectionaboutDto: UpdateSectionaboutDto,
+  ) {
+    return await this.sectionaboutService.updateAll(
+      contentGroupId,
+      updateSectionaboutDto,
+    );
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.sectionaboutService.remove(id);

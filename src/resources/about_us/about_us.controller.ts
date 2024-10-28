@@ -54,7 +54,17 @@ export class AboutUsController {
   update(@Param('id') id: string, @Body() updateAboutUsDto: UpdateAboutUsDto) {
     return this.aboutUsService.update(id, updateAboutUsDto);
   }
-
+  
+  @Patch(':contentGroupId/bulk-update')
+  async updateAll(
+    @Param('contentGroupId') contentGroupId: string,
+    @Body() updateAboutUsDto: UpdateAboutUsDto,
+  ) {
+    return await this.aboutUsService.updateAll(
+      contentGroupId,
+      updateAboutUsDto,
+    );
+  }
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.aboutUsService.remove(id);

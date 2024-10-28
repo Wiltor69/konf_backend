@@ -33,18 +33,41 @@ export class MainService {
     return this.mainModel.find().exec();
   }
 
-  findOne(id: string): Promise<Main> {
-    return this.mainModel.findById(id).exec();
+  async findOne(id: string): Promise<Main> {
+    const main = await this.mainModel.findById(id).exec();
+    if (!main) {
+      throw new NotFoundException(`Main with ID ${id} not found`);
+    }
+    return main;
   }
 
   async findByLanguage(language: ELanguage): Promise<Main[]> {
     return this.mainModel.find({ language }).exec();
   }
 
-  update(id: string, updateMainDto: UpdateMainDto): Promise<Main> {
-    return this.mainModel.findByIdAndUpdate(id, updateMainDto, {
+  async update(id: string, updateMainDto: UpdateMainDto): Promise<Main> {
+    const update = { $set: updateMainDto };
+    const main = await this.mainModel.findByIdAndUpdate(id, update, {
       new: true,
     });
+    if (!main) {
+      throw new NotFoundException(`Main with ID ${id} not found`);
+    }
+    return main;
+  }
+
+  async updateAll(
+    contentGroupId: string,
+    updateMainDto: UpdateMainDto,
+  ): Promise<Main[]> {
+    const update = { $set: updateMainDto };
+    const result = await this.mainModel.updateMany({ contentGroupId }, update);
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No Main entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.mainModel.find({ contentGroupId }).exec();
   }
 
   async remove(id: string): Promise<void> {

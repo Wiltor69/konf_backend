@@ -50,18 +50,51 @@ export class OurprojectService {
     return this.ourprojectModel.find().populate('image');
   }
 
-  findOne(id: string): Promise<Ourproject> {
-    return this.ourprojectModel.findById(id).populate('image');
+  async findOne(id: string): Promise<Ourproject> {
+    const ourproject = await this.ourprojectModel
+      .findById(id)
+      .populate('image')
+      .exec();
+    if (!ourproject) {
+      throw new NotFoundException(`Ourproject with ID ${id} not found`);
+    }
+    return ourproject;
   }
 
   async findByLanguage(language: ELanguage): Promise<Ourproject[]> {
     return this.ourprojectModel.find({ language }).populate('image');
   }
 
-  update(id: string, updateOurprojectDto: UpdateOurprojectDto) {
-    return this.ourprojectModel.findByIdAndUpdate(id, updateOurprojectDto, {
-      new: true,
-    });
+  async update(id: string, updateOurprojectDto: UpdateOurprojectDto) {
+    const update = { $set: updateOurprojectDto };
+    const ourproject = await this.ourprojectModel.findByIdAndUpdate(
+      id,
+      update,
+      {
+        new: true,
+      },
+    );
+    if (!ourproject) {
+      throw new NotFoundException(`Partner with ID ${id} not found`);
+    }
+    return ourproject;
+  }
+
+  async updateAll(
+    contentGroupId: string,
+    updateOurprojectDto: UpdateOurprojectDto,
+  ): Promise<Ourproject[]> {
+    const update = { $set: updateOurprojectDto };
+    const result = await this.ourprojectModel.updateMany(
+      { contentGroupId },
+      update,
+    );
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No Ourproject entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.ourprojectModel.find({ contentGroupId }).exec();
   }
 
   async remove(id: string): Promise<void> {

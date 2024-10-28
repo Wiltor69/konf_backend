@@ -53,6 +53,14 @@ export class MainController {
     return this.mainService.update(id, updateMainDto);
   }
 
+  @Patch(':contentGroupId/bulk-update')
+  async updateAll(
+    @Param('contentGroupId') contentGroupId: string,
+    @Body() updateMainDto: UpdateMainDto,
+  ) {
+    return await this.mainService.updateAll(contentGroupId, updateMainDto);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.mainService.remove(id);

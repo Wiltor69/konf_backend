@@ -33,16 +33,42 @@ export class WorthService {
     return this.worthModel.find().exec();
   }
 
-  findOne(id: string): Promise<Worth> {
-    return this.worthModel.findById(id);
+  async findOne(id: string): Promise<Worth> {
+    const worth = await this.worthModel.findById(id);
+    if (!worth) {
+      throw new NotFoundException(`Worth with ID ${id} not found`);
+    }
+    return worth;
   }
 
   async findByLanguage(language: ELanguage): Promise<Worth[]> {
     return this.worthModel.find({ language }).exec();
   }
 
-  update(id: string, updateWorthDto: UpdateWorthDto): Promise<Worth> {
-    return this.worthModel.findByIdAndUpdate(id, updateWorthDto, { new: true });
+  async update(id: string, updateWorthDto: UpdateWorthDto): Promise<Worth> {
+    const update = { $set: updateWorthDto };
+    const worth = await this.worthModel.findByIdAndUpdate(id, update, {
+      new: true,
+    });
+
+    if (!worth) {
+      throw new NotFoundException(`Worth with ID ${id} not found`);
+    }
+    return worth;
+  }
+
+  async updateAll(
+    contentGroupId: string,
+    updateWorthDto: UpdateWorthDto,
+  ): Promise<Worth[]> {
+    const update = { $set: updateWorthDto };
+    const result = await this.worthModel.updateMany({ contentGroupId }, update);
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No Worth entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.worthModel.find({ contentGroupId }).exec();
   }
 
   async remove(id: string): Promise<void> {

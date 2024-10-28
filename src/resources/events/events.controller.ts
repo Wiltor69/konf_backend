@@ -55,6 +55,14 @@ export class EventsController {
     return this.eventsService.update(id, updateEventDto);
   }
 
+  @Patch(':contentGroupId/bulk-update')
+  async updateAll(
+    @Param('contentGroupId') contentGroupId: string,
+    @Body() updateEventDto: UpdateEventDto,
+  ) {
+    return await this.eventsService.updateAll(contentGroupId, updateEventDto);
+  }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.eventsService.remove(id);

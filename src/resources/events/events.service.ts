@@ -49,18 +49,41 @@ export class EventsService {
     return this.eventModel.find().populate('image');
   }
 
-  findOne(id: string): Promise<Event> {
-    return this.eventModel.findById(id).populate('image');
+  async findOne(id: string): Promise<Event> {
+    const event = await this.eventModel.findById(id).populate('image').exec();
+    if (!event) {
+      throw new NotFoundException(`Event with ID ${id} not found`);
+    }
+    return event;
   }
 
   async findByLanguage(language: ELanguage): Promise<Event[]> {
     return this.eventModel.find({ language }).populate('image');
   }
 
-  update(id: string, updateEventDto: UpdateEventDto): Promise<Event> {
-    return this.eventModel.findByIdAndUpdate(id, updateEventDto, {
+  async update(id: string, updateEventDto: UpdateEventDto): Promise<Event> {
+    const update = { $set: updateEventDto };
+    const event = await this.eventModel.findByIdAndUpdate(id, update, {
       new: true,
     });
+    if (!event) {
+      throw new NotFoundException(`Event with ID ${id} not found`);
+    }
+    return event;
+  }
+
+  async updateAll(
+    contentGroupId: string,
+    updateEventDto: UpdateEventDto,
+  ): Promise<Event[]> {
+    const update = { $set: updateEventDto };
+    const result = await this.eventModel.updateMany({ contentGroupId }, update);
+    if (result.modifiedCount === 0) {
+      throw new NotFoundException(
+        `No Event entities found with contentGroupId ${contentGroupId}`,
+      );
+    }
+    return this.eventModel.find({ contentGroupId }).exec();
   }
 
   async remove(id: string): Promise<void> {
