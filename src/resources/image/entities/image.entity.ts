@@ -22,5 +22,7 @@ export class Image {
   })
   @Prop()
   description: string;
+
+     
 }
 export const ImageSchema = SchemaFactory.createForClass(Image);

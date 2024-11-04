@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateImageDto } from './dto/create-image.dto';
 import { Image, ImageDocument } from './entities/image.entity';
 import { InjectModel } from '@nestjs/mongoose';
@@ -47,7 +51,18 @@ export class ImageService {
     return this.imageModel.findById(id);
   }
 
-  remove(id: string): Promise<Image> {
-    return this.imageModel.findByIdAndDelete(id);
+  async remove(id: string): Promise<void> {
+    const image = await this.imageModel.findById(id);
+    if (!image) {
+      throw new NotFoundException('Image is not find');
+    }
+
+    await this.cloudinary.deleteImage(image.id).catch((e) => {
+      throw new InternalServerErrorException(
+        `Failed to delete image from Cloudinary: ${e.message}`,
+      );
+    });
+
+    await this.imageModel.findByIdAndDelete(id).exec();
   }
 }

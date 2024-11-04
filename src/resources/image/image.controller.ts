@@ -10,6 +10,8 @@ import {
   BadRequestException,
   ParseFilePipe,
   FileTypeValidator,
+  HttpStatus,
+  Res,
 } from '@nestjs/common';
 import { ImageService } from './image.service';
 import { CreateImageDto } from './dto/create-image.dto';
@@ -19,6 +21,7 @@ import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { Types } from 'mongoose';
 @ApiTags('image')
 @Controller('image')
 export class ImageController {
@@ -60,7 +63,22 @@ export class ImageController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.imageService.remove(id);
+  async remove(@Param('id') id: string, @Res() res) {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException(`Invalid imageId ${id}`);
+    } else {
+      try {
+        const result = await this.imageService.remove(id);
+        return res.status(HttpStatus.OK).json({
+          message: 'File deleted successfully',
+          result,
+        });
+      } catch (error) {
+        return res.status(HttpStatus.BAD_REQUEST).json({
+          message: 'Failed to delete file',
+          error: error.message,
+        });
+      }
+    }
   }
 }
