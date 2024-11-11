@@ -8,7 +8,7 @@ import { CreateWorthDto } from './dto/create-worth.dto';
 import { UpdateWorthDto } from './dto/update-worth.dto';
 import { Worth, WorthDocument } from './entities/worth.entity';
 
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ELanguage } from '../util/enum';
 import { ContentGroupService } from '../content-group/content-group.service';
 
@@ -43,6 +43,23 @@ export class WorthService {
 
   async findByLanguage(language: ELanguage): Promise<Worth[]> {
     return this.worthModel.find({ language }).exec();
+  }
+
+  async findOneByLanguageAndContentGroupId(
+    contentGroupId: Types.ObjectId,
+    lang: ELanguage,
+  ) {
+    const query = this.worthModel
+      .where('contentGroupId', contentGroupId)
+      .where('language', lang);
+
+    const worth = await query.findOne().exec();
+    if (!worth) {
+      throw new NotFoundException(
+        `Entity with contentGroupId ${contentGroupId} and language ${lang} not found`,
+      );
+    }
+    return worth;
   }
 
   async update(id: string, updateWorthDto: UpdateWorthDto): Promise<Worth> {

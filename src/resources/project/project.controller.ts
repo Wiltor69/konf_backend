@@ -44,6 +44,21 @@ export class ProjectController {
     return this.projectService.findByLanguage(language);
   }
 
+  @Get(':lang/:contentGroupId')
+  async findOneByLanguageAndContentGroupId(
+    @Param('contentGroupId') contentGroupId: string,
+    @Param('lang') lang: ELanguage,
+  ) {
+    if (!Types.ObjectId.isValid(contentGroupId)) {
+      throw new BadRequestException('Invalid contentGroupId');
+    }
+    const objectId = new Types.ObjectId(contentGroupId);
+    return this.projectService.findOneByLanguageAndContentGroupId(
+      objectId,
+      lang,
+    );
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.projectService.findOne(id);

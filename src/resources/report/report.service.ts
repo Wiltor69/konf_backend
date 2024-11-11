@@ -4,7 +4,7 @@ import { UpdateReportDto } from './dto/update-report.dto';
 import { ContentGroupService } from '../content-group/content-group.service';
 import { ReportDocument, Report } from './entities/report.entity';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ELanguage } from '../util/enum';
 
 @Injectable()
@@ -41,6 +41,23 @@ export class ReportService {
 
   async findByLanguage(language: ELanguage): Promise<Report[]> {
     return this.reportModel.find({ language }).exec();
+  }
+
+  async findOneByLanguageAndContentGroupId(
+    contentGroupId: Types.ObjectId,
+    lang: ELanguage,
+  ) {
+    const query = this.reportModel
+      .where('contentGroupId', contentGroupId)
+      .where('language', lang);
+
+    const report = await query.findOne().exec();
+    if (!report) {
+      throw new NotFoundException(
+        `Entity with contentGroupId ${contentGroupId} and language ${lang} not found`,
+      );
+    }
+    return report;
   }
 
   async update(id: string, updateReportDto: UpdateReportDto): Promise<Report> {

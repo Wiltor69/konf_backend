@@ -48,6 +48,18 @@ export class MainController {
     return this.mainService.findByLanguage(language);
   }
 
+  @Get(':lang/:contentGroupId')
+  async findOneByLanguageAndContentGroupId(
+    @Param('contentGroupId') contentGroupId: string,
+    @Param('lang') lang: ELanguage,
+  ) {
+    if (!Types.ObjectId.isValid(contentGroupId)) {
+      throw new BadRequestException('Invalid contentGroupId');
+    }
+    const objectId = new Types.ObjectId(contentGroupId);
+    return this.mainService.findOneByLanguageAndContentGroupId(objectId, lang);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMainDto: UpdateMainDto) {
     return this.mainService.update(id, updateMainDto);

@@ -6,7 +6,7 @@ import {
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { Contact, ContactDocument } from './entities/contact.entity';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ELanguage } from '../util/enum';
 import { ContentGroupService } from '../content-group/content-group.service';
@@ -45,6 +45,23 @@ export class ContactService {
 
   async findByLanguage(language: ELanguage): Promise<Contact[]> {
     return this.contactModel.find({ language }).exec();
+  }
+
+  async findOneByLanguageAndContentGroupId(
+    contentGroupId: Types.ObjectId,
+    lang: ELanguage,
+  ) {
+    const query = this.contactModel
+      .where('contentGroupId', contentGroupId)
+      .where('language', lang);
+
+    const contact = await query.findOne().exec();
+    if (!contact) {
+      throw new NotFoundException(
+        `Entity with contentGroupId ${contentGroupId} and language ${lang} not found`,
+      );
+    }
+    return contact;
   }
 
   async update(

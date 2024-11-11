@@ -7,7 +7,7 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Event, EventDocument } from './entities/event.entity';
 import { ImageService } from '../image/image.service';
 import { AddImageEventDto } from './dto/add-image-event.dto';
@@ -59,6 +59,23 @@ export class EventsService {
 
   async findByLanguage(language: ELanguage): Promise<Event[]> {
     return this.eventModel.find({ language }).populate('image');
+  }
+
+  async findOneByLanguageAndContentGroupId(
+    contentGroupId: Types.ObjectId,
+    lang: ELanguage,
+  ) {
+    const query = this.eventModel
+      .where('contentGroupId', contentGroupId)
+      .where('language', lang);
+
+    const event = await query.findOne().populate('image').exec();
+    if (!event) {
+      throw new NotFoundException(
+        `Entity with contentGroupId ${contentGroupId} and language ${lang} not found`,
+      );
+    }
+    return event;
   }
 
   async update(id: string, updateEventDto: UpdateEventDto): Promise<Event> {

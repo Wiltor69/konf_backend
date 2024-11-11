@@ -46,6 +46,21 @@ export class ReportController {
     return this.reportService.findByLanguage(language);
   }
 
+  @Get(':lang/:contentGroupId')
+  async findOneByLanguageAndContentGroupId(
+    @Param('contentGroupId') contentGroupId: string,
+    @Param('lang') lang: ELanguage,
+  ) {
+    if (!Types.ObjectId.isValid(contentGroupId)) {
+      throw new BadRequestException('Invalid contentGroupId');
+    }
+    const objectId = new Types.ObjectId(contentGroupId);
+    return this.reportService.findOneByLanguageAndContentGroupId(
+      objectId,
+      lang,
+    );
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.reportService.findOne(id);

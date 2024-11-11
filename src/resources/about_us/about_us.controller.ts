@@ -50,6 +50,30 @@ export class AboutUsController {
     return this.aboutUsService.findByLanguage(language);
   }
 
+  // @Get(':contentGroupId')
+  // async findByBaseEntityId(@Param('contentGroupId') contentGroupId: string) {
+  //   if (!Types.ObjectId.isValid(contentGroupId)) {
+  //     throw new BadRequestException('Invalid contentGroupId');
+  //   }
+  //   const objectId = new Types.ObjectId(contentGroupId);
+  //   return this.aboutUsService.findByContentGroupId(objectId);
+  // }
+
+  @Get(':lang/:contentGroupId')
+  async findOneByLanguageAndContentGroupId(
+    @Param('contentGroupId') contentGroupId: string,
+    @Param('lang') lang: ELanguage,
+  ) {
+    if (!Types.ObjectId.isValid(contentGroupId)) {
+      throw new BadRequestException('Invalid contentGroupId');
+    }
+    const objectId = new Types.ObjectId(contentGroupId);
+    return this.aboutUsService.findOneByLanguageAndContentGroupId(
+      objectId,
+      lang,
+    );
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateAboutUsDto: UpdateAboutUsDto) {
     return this.aboutUsService.update(id, updateAboutUsDto);

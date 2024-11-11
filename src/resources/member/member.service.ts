@@ -8,7 +8,7 @@ import { UpdateMemberDto } from './dto/update-member.dto';
 import { Member, MemberDocument } from './entities/member.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { ImageService } from '../image/image.service';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { AddImageMemberDto } from './dto/add-image-member.dto';
 import { ELanguage } from '../util/enum';
 import { ContentGroupService } from '../content-group/content-group.service';
@@ -56,6 +56,23 @@ export class MemberService {
 
   async findByLanguage(language: ELanguage): Promise<Member[]> {
     return this.memberModel.find({ language }).populate('image');
+  }
+
+  async findOneByLanguageAndContentGroupId(
+    contentGroupId: Types.ObjectId,
+    lang: ELanguage,
+  ) {
+    const query = this.memberModel
+      .where('contentGroupId', contentGroupId)
+      .where('language', lang);
+
+    const member = await query.findOne().populate('image').exec();
+    if (!member) {
+      throw new NotFoundException(
+        `Entity with contentGroupId ${contentGroupId} and language ${lang} not found`,
+      );
+    }
+    return member;
   }
 
   async update(id: string, updateMemberDto: UpdateMemberDto): Promise<Member> {

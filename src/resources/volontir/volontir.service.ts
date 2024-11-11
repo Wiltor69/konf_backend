@@ -6,7 +6,7 @@ import {
 import { CreateVolontirDto } from './dto/create-volontir.dto';
 import { UpdateVolontirDto } from './dto/update-volontir.dto';
 import { Volontir, VolontirDocument } from './entities/volontir.entity';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ImageService } from '../image/image.service';
 import { InjectModel } from '@nestjs/mongoose';
 import { AddImageVolontirDto } from './dto/add-image-volontir';
@@ -57,6 +57,23 @@ export class VolontirService {
 
   async findByLanguage(language: ELanguage): Promise<Volontir[]> {
     return this.volontirModel.find({ language }).populate('image');
+  }
+
+  async findOneByLanguageAndContentGroupId(
+    contentGroupId: Types.ObjectId,
+    lang: ELanguage,
+  ) {
+    const query = this.volontirModel
+      .where('contentGroupId', contentGroupId)
+      .where('language', lang);
+
+    const volontir = await query.findOne().populate('image').exec();
+    if (!volontir) {
+      throw new NotFoundException(
+        `Entity with contentGroupId ${contentGroupId} and language ${lang} not found`,
+      );
+    }
+    return volontir;
   }
 
   async update(id: string, updateVolontirDto: UpdateVolontirDto) {

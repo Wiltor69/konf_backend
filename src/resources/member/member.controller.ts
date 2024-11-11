@@ -50,6 +50,21 @@ export class MemberController {
     return this.memberService.findByLanguage(language);
   }
 
+  @Get(':lang/:contentGroupId')
+  async findOneByLanguageAndContentGroupId(
+    @Param('contentGroupId') contentGroupId: string,
+    @Param('lang') lang: ELanguage,
+  ) {
+    if (!Types.ObjectId.isValid(contentGroupId)) {
+      throw new BadRequestException('Invalid contentGroupId');
+    }
+    const objectId = new Types.ObjectId(contentGroupId);
+    return this.memberService.findOneByLanguageAndContentGroupId(
+      objectId,
+      lang,
+    );
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMemberDto: UpdateMemberDto) {
     return this.memberService.update(id, updateMemberDto);

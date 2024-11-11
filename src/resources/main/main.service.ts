@@ -7,7 +7,7 @@ import { CreateMainDto } from './dto/create-main.dto';
 import { UpdateMainDto } from './dto/update-main.dto';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Main, MainDocument } from './entities/main.entity';
 import { ELanguage } from '../util/enum';
 import { ContentGroupService } from '../content-group/content-group.service';
@@ -43,6 +43,23 @@ export class MainService {
 
   async findByLanguage(language: ELanguage): Promise<Main[]> {
     return this.mainModel.find({ language }).exec();
+  }
+
+  async findOneByLanguageAndContentGroupId(
+    contentGroupId: Types.ObjectId,
+    lang: ELanguage,
+  ) {
+    const query = this.mainModel
+      .where('contentGroupId', contentGroupId)
+      .where('language', lang);
+
+    const main = await query.findOne().populate('image').exec();
+    if (!main) {
+      throw new NotFoundException(
+        `Entity with contentGroupId ${contentGroupId} and language ${lang} not found`,
+      );
+    }
+    return main;
   }
 
   async update(id: string, updateMainDto: UpdateMainDto): Promise<Main> {

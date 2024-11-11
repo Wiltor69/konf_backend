@@ -8,7 +8,7 @@ import { UpdateAboutUsDto } from './dto/update-about_us.dto';
 import { AboutUs, AboutUsDocument } from './entities/about_us.entity';
 
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { AddImageAboutDto } from './dto/add-image-about.dto';
 import { ImageService } from '../image/image.service';
 import { ELanguage } from '../util/enum';
@@ -59,6 +59,35 @@ export class AboutUsService {
   async findByLanguage(language: ELanguage): Promise<AboutUs[]> {
     return this.aboutUsModel.find({ language }).populate('image');
   }
+
+  async findOneByLanguageAndContentGroupId(
+    contentGroupId: Types.ObjectId,
+    lang: ELanguage,
+  ) {
+    const query = this.aboutUsModel
+      .where('contentGroupId', contentGroupId)
+      .where('language', lang);
+
+    const aboutUsEntity = await query.findOne().populate('image').exec();
+    if (!aboutUsEntity) {
+      throw new NotFoundException(
+        `Entity with contentGroupId ${contentGroupId} and language ${lang} not found`,
+      );
+    }
+    return aboutUsEntity;
+  }
+
+  // async findByContentGroupId(contentGroupId: Types.ObjectId) {
+  // const query = this.aboutUsModel.where('contentGroupId', contentGroupId);
+
+  // const aboutUs = await query.findOne().exec();
+  // if (!aboutUs) {
+  //   throw new NotFoundException(
+  //     `Report with contentGroupId ${contentGroupId} not found`,
+  //   );
+  // }
+  //   return this.aboutUsModel.find({ contentGroupId }).populate('image');
+  // }
 
   async update(
     id: string,

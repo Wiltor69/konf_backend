@@ -5,8 +5,10 @@ import {
   Body,
   Patch,
   Param,
+  // Query,
   Delete,
   NotFoundException,
+  // BadRequestException,
 } from '@nestjs/common';
 import { PartnerService } from './partner.service';
 import { CreatePartnerDto } from './dto/create-partner.dto';
@@ -14,7 +16,8 @@ import { UpdatePartnerDto } from './dto/update-partner.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { InjectModel } from '@nestjs/mongoose';
 import { Partner, PartnerDocument } from './entities/partner.entity';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
+// import { ELanguage } from '../util/enum';
 @ApiTags('partner')
 @Controller('partner')
 export class PartnerController {
@@ -32,6 +35,26 @@ export class PartnerController {
   findAll() {
     return this.partnerService.findAll();
   }
+
+  // @Get()
+  // async findAllLanguge(@Query('language') language: ELanguage) {
+  //   return this.partnerService.findByLanguage(language);
+  // }
+
+  // @Get(':lang/:contentGroupId')
+  // async findOneByLanguageAndContentGroupId(
+  //   @Param('contentGroupId') contentGroupId: string,
+  //   @Param('lang') lang: ELanguage,
+  // ) {
+  //   if (!Types.ObjectId.isValid(contentGroupId)) {
+  //     throw new BadRequestException('Invalid contentGroupId');
+  //   }
+  //   const objectId = new Types.ObjectId(contentGroupId);
+  //   return this.partnerService.findOneByLanguageAndContentGroupId(
+  //     objectId,
+  //     lang,
+  //   );
+  // }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

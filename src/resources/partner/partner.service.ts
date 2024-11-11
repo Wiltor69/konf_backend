@@ -4,8 +4,9 @@ import { UpdatePartnerDto } from './dto/update-partner.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Partner, PartnerDocument } from './entities/partner.entity';
 import { ImageService } from '../image/image.service';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { AddImageDto } from './dto/add-image.dto';
+import { ELanguage } from '../util/enum';
 
 @Injectable()
 export class PartnerService {
@@ -37,6 +38,10 @@ export class PartnerService {
     return this.partnerModel.find().populate('image');
   }
 
+  async findByLanguage(language: ELanguage): Promise<Partner[]> {
+    return this.partnerModel.find({ language }).populate('image');
+  }
+
   async findOne(id: string): Promise<Partner> {
     const partner = await this.partnerModel
       .findById(id)
@@ -44,6 +49,23 @@ export class PartnerService {
       .exec();
     if (!partner) {
       throw new NotFoundException(`Partner with ID ${id} not found`);
+    }
+    return partner;
+  }
+
+  async findOneByLanguageAndContentGroupId(
+    contentGroupId: Types.ObjectId,
+    lang: ELanguage,
+  ) {
+    const query = this.partnerModel
+      .where('contentGroupId', contentGroupId)
+      .where('language', lang);
+
+    const partner = await query.findOne().populate('image').exec();
+    if (!partner) {
+      throw new NotFoundException(
+        `Entity with contentGroupId ${contentGroupId} and language ${lang} not found`,
+      );
     }
     return partner;
   }

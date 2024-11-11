@@ -8,7 +8,7 @@ import { UpdateHelpDto } from './dto/update-help.dto';
 import { ImageService } from '../image/image.service';
 import { Help, HelpDocument } from './entities/help.entity';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { AddImageHelpDto } from './dto/add-image-help.dto';
 import { ELanguage } from '../util/enum';
 import { ContentGroupService } from '../content-group/content-group.service';
@@ -58,6 +58,23 @@ export class HelpService {
 
   async findByLanguage(language: ELanguage): Promise<Help[]> {
     return this.helpModel.find({ language }).populate('image');
+  }
+
+  async findOneByLanguageAndContentGroupId(
+    contentGroupId: Types.ObjectId,
+    lang: ELanguage,
+  ) {
+    const query = this.helpModel
+      .where('contentGroupId', contentGroupId)
+      .where('language', lang);
+
+    const help = await query.findOne().populate('image').exec();
+    if (!help) {
+      throw new NotFoundException(
+        `Entity with contentGroupId ${contentGroupId} and language ${lang} not found`,
+      );
+    }
+    return help;
   }
 
   async update(id: string, updateHelpDto: UpdateHelpDto): Promise<Help> {

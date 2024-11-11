@@ -11,7 +11,7 @@ import {
 } from './entities/sectionabout.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { ImageService } from '../image/image.service';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { AddImageSectionDto } from './dto/add-image-section.dto';
 import { ELanguage } from '../util/enum';
 import { ContentGroupService } from '../content-group/content-group.service';
@@ -64,6 +64,23 @@ export class SectionaboutService {
 
   async findByLanguage(language: ELanguage): Promise<Sectionabout[]> {
     return this.sectionaboutModel.find({ language }).populate('image');
+  }
+
+  async findOneByLanguageAndContentGroupId(
+    contentGroupId: Types.ObjectId,
+    lang: ELanguage,
+  ) {
+    const query = this.sectionaboutModel
+      .where('contentGroupId', contentGroupId)
+      .where('language', lang);
+
+    const sectionabout = await query.findOne().populate('image').exec();
+    if (!sectionabout) {
+      throw new NotFoundException(
+        `Entity with contentGroupId ${contentGroupId} and language ${lang} not found`,
+      );
+    }
+    return sectionabout;
   }
 
   async update(

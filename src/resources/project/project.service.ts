@@ -7,7 +7,7 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Project } from './entities/project.entity';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { ImageService } from '../image/image.service';
 import { AddImageProjectDto } from './dto/add-image-project';
 import { ELanguage } from '../util/enum';
@@ -62,6 +62,23 @@ export class ProjectService {
 
   async findByLanguage(language: ELanguage): Promise<Project[]> {
     return this.projectModel.find({ language }).populate('image');
+  }
+
+  async findOneByLanguageAndContentGroupId(
+    contentGroupId: Types.ObjectId,
+    lang: ELanguage,
+  ) {
+    const query = this.projectModel
+      .where('contentGroupId', contentGroupId)
+      .where('language', lang);
+
+    const project = await query.findOne().populate('image').exec();
+    if (!project) {
+      throw new NotFoundException(
+        `Entity with contentGroupId ${contentGroupId} and language ${lang} not found`,
+      );
+    }
+    return project;
   }
 
   async update(id: string, updateProjectDto: UpdateProjectDto) {

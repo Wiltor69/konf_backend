@@ -4,7 +4,7 @@ import { UpdateGalleryDto } from './dto/update-gallery.dto';
 import { Gallery, GalleryDocument } from './entities/gallery.entity';
 import { ContentGroupService } from '../content-group/content-group.service';
 import { ImageService } from '../image/image.service';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { AddImageDto } from './dto/add-image.dto';
 import { ELanguage } from '../util/enum';
@@ -55,6 +55,23 @@ export class GalleryService {
 
   async findByLanguage(language: ELanguage): Promise<Gallery[]> {
     return this.galleryModel.find({ language }).populate('image');
+  }
+
+  async findOneByLanguageAndContentGroupId(
+    contentGroupId: Types.ObjectId,
+    lang: ELanguage,
+  ) {
+    const query = this.galleryModel
+      .where('contentGroupId', contentGroupId)
+      .where('language', lang);
+
+    const gallery = await query.findOne().populate('image').exec();
+    if (!gallery) {
+      throw new NotFoundException(
+        `Entity with contentGroupId ${contentGroupId} and language ${lang} not found`,
+      );
+    }
+    return gallery;
   }
 
   async update(

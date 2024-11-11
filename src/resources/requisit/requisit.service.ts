@@ -6,7 +6,7 @@ import {
 import { CreateRequisitDto } from './dto/create-requisit.dto';
 import { UpdateRequisitDto } from './dto/update-requisit.dto';
 import { Requisit, RequisitDocument } from './entities/requisit.entity';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ELanguage } from '../util/enum';
 import { ContentGroupService } from '../content-group/content-group.service';
@@ -44,6 +44,23 @@ export class RequisitService {
 
   async findByLanguage(language: ELanguage): Promise<Requisit[]> {
     return this.requisitModel.find({ language }).exec();
+  }
+
+  async findOneByLanguageAndContentGroupId(
+    contentGroupId: Types.ObjectId,
+    lang: ELanguage,
+  ) {
+    const query = this.requisitModel
+      .where('contentGroupId', contentGroupId)
+      .where('language', lang);
+
+    const requisit = await query.findOne().exec();
+    if (!requisit) {
+      throw new NotFoundException(
+        `Entity with contentGroupId ${contentGroupId} and language ${lang} not found`,
+      );
+    }
+    return requisit;
   }
 
   async update(
