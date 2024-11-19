@@ -9,11 +9,11 @@ export class CreateHelpDto {
   })
   titleHelp: string;
 
-  @ApiProperty({
-    description: 'A brief description of the help',
-    example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
-  })
-  description: string;
+  // @ApiProperty({
+  //   description: 'A brief description of the help',
+  //   example: 'Ea cupiditate aperiam possimus sed voluptates reiciendis harum.',
+  // })
+  // description: string;
 
   @ApiProperty({
     description: 'This is id of Image',
