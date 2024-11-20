@@ -10,15 +10,22 @@ import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ELanguage } from '../util/enum';
 import { ContentGroupService } from '../content-group/content-group.service';
+import { EntityLimitService } from '../content-group/entity-limit.service';
+import { ELimitEntity } from '../util/limit-entity.enum';
 
 @Injectable()
 export class RequisitService {
   constructor(
     @InjectModel(Requisit.name) private requisitModel: Model<RequisitDocument>,
     private readonly contentGroupService: ContentGroupService,
+    private readonly entityLimitService: EntityLimitService,
   ) {}
 
   async create(createRequisitDto: CreateRequisitDto): Promise<Requisit> {
+    await this.entityLimitService.checkEntityLimit(
+      this.requisitModel,
+      ELimitEntity.REQUISIT,
+    );
     const contentGroupId = await this.contentGroupService.ensureContentGroup(
       createRequisitDto.contentGroupId,
       createRequisitDto.language,

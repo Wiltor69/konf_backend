@@ -12,6 +12,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { AddImageVolontirDto } from './dto/add-image-volontir';
 import { ELanguage } from '../util/enum';
 import { ContentGroupService } from '../content-group/content-group.service';
+import { EntityLimitService } from '../content-group/entity-limit.service';
+import { ELimitEntity } from '../util/limit-entity.enum';
 
 @Injectable()
 export class VolontirService {
@@ -19,8 +21,13 @@ export class VolontirService {
     @InjectModel(Volontir.name) private volontirModel: Model<VolontirDocument>,
     private readonly imageService: ImageService,
     private readonly contentGroupService: ContentGroupService,
+    private readonly entityLimitService: EntityLimitService,
   ) {}
   async create(createVolontirDto: CreateVolontirDto) {
+    await this.entityLimitService.checkEntityLimit(
+      this.volontirModel,
+      ELimitEntity.VOLONTIR,
+    );
     const addImageVolontirDto: AddImageVolontirDto = { ...createVolontirDto };
     const contentGroupId = await this.contentGroupService.ensureContentGroup(
       createVolontirDto.contentGroupId,

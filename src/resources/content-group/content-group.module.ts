@@ -6,6 +6,7 @@ import {
   ContentGroup,
   ContentGroupSchema,
 } from './entities/content-group.entity';
+import { EntityLimitService } from './entity-limit.service';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import {
     ]),
   ],
   controllers: [ContentGroupController],
-  providers: [ContentGroupService],
-  exports: [ContentGroupService],
+  providers: [ContentGroupService, EntityLimitService],
+  exports: [ContentGroupService, EntityLimitService],
 })
 export class ContentGroupModule {}

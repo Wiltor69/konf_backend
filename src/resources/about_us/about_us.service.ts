@@ -13,6 +13,8 @@ import { AddImageAboutDto } from './dto/add-image-about.dto';
 import { ImageService } from '../image/image.service';
 import { ELanguage } from '../util/enum';
 import { ContentGroupService } from '../content-group/content-group.service';
+import { EntityLimitService } from '../content-group/entity-limit.service';
+import { ELimitEntity } from '../util/limit-entity.enum';
 
 @Injectable()
 export class AboutUsService {
@@ -20,9 +22,14 @@ export class AboutUsService {
     @InjectModel(AboutUs.name) private aboutUsModel: Model<AboutUsDocument>,
     private readonly imageService: ImageService,
     private readonly contentGroupService: ContentGroupService,
+    private readonly entityLimitService: EntityLimitService,
   ) {}
 
   async create(createAboutUsDto: CreateAboutUsDto) {
+    await this.entityLimitService.checkEntityLimit(
+      this.aboutUsModel,
+      ELimitEntity.ABOUT_US,
+    );
     const addImageAboutDto: AddImageAboutDto = { ...createAboutUsDto };
     const contentGroupId = await this.contentGroupService.ensureContentGroup(
       createAboutUsDto.contentGroupId,

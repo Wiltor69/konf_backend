@@ -11,15 +11,23 @@ import { Model, Types } from 'mongoose';
 import { Main, MainDocument } from './entities/main.entity';
 import { ELanguage } from '../util/enum';
 import { ContentGroupService } from '../content-group/content-group.service';
+import { EntityLimitService } from '../content-group/entity-limit.service';
+import { ELimitEntity } from '../util/limit-entity.enum';
 
 @Injectable()
 export class MainService {
   constructor(
     @InjectModel(Main.name) private mainModel: Model<MainDocument>,
     private readonly contentGroupService: ContentGroupService,
+    private readonly entityLimitService: EntityLimitService,
   ) {}
 
   async create(createMainDto: CreateMainDto): Promise<Main> {
+    
+    await this.entityLimitService.checkEntityLimit(
+      this.mainModel,
+      ELimitEntity.MAIN,
+    );
     const contentGroupId = await this.contentGroupService.ensureContentGroup(
       createMainDto.contentGroupId,
       createMainDto.language,

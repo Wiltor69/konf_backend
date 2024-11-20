@@ -10,15 +10,22 @@ import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ELanguage } from '../util/enum';
 import { ContentGroupService } from '../content-group/content-group.service';
+import { EntityLimitService } from '../content-group/entity-limit.service';
+import { ELimitEntity } from '../util/limit-entity.enum';
 
 @Injectable()
 export class ContactService {
   constructor(
     @InjectModel(Contact.name) private contactModel: Model<ContactDocument>,
     private readonly contentGroupService: ContentGroupService,
+    private readonly entityLimitService: EntityLimitService,
   ) {}
 
   async create(createContactDto: CreateContactDto): Promise<Contact> {
+    await this.entityLimitService.checkEntityLimit(
+      this.contactModel,
+      ELimitEntity.CONTACT,
+    );
     const contentGroupId = await this.contentGroupService.ensureContentGroup(
       createContactDto.contentGroupId,
       createContactDto.language,
