@@ -23,6 +23,7 @@ import { SectionvolontirModule } from './resources/sectionvolontir/sectionvolont
 import { ContentGroupModule } from './resources/content-group/content-group.module';
 import { ReportModule } from './resources/report/report.module';
 import { GalleryModule } from './resources/gallery/gallery.module';
+import { CurrencyrequisitModule } from './resources/currencyrequisit/currencyrequisit.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { GalleryModule } from './resources/gallery/gallery.module';
     ContentGroupModule,
     ReportModule,
     GalleryModule,
+    CurrencyrequisitModule,
   ],
   controllers: [AppController],
   providers: [AppService],
