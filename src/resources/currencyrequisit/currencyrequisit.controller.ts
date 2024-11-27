@@ -37,7 +37,7 @@ export class CurrencyrequisitController {
     return this.currencyrequisitService.create(createCurrencyRequisitDto);
   }
 
-  @Get()
+  // @Get()
   // findAll() {
   //   return this.currencyrequisitService.findAll();
   // }
